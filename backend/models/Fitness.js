@@ -1,0 +1,67 @@
+const mongoose = require('mongoose')
+
+const fitnessSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+    index: true
+  },
+  vehicleNumber: {
+    type: String,
+    ref: 'VehicleRegistration',
+    required: true,
+    uppercase: true,
+    trim: true,
+  },
+  ownerName: {
+    type: String,
+    trim: true
+  },
+  validFrom: {
+    type: String,
+    required: true
+  },
+  validTo: {
+    type: String,
+    required: true
+  },
+
+  // Renewal status - set to true when this fitness has been renewed
+  isRenewed: {
+    type: Boolean,
+    default: false
+  },
+
+  // WhatsApp message tracking
+  whatsappMessageCount: {
+    type: Number,
+    default: 0
+  },
+  lastWhatsappSentAt: {
+    type: Date
+  }
+}, {
+  timestamps: true
+})
+
+// Optimized indexes for exact requirements:
+// Optimized indexes for active fitness lookups
+
+// Index 1: vehicleNumber (for searching vehicle and getting all its fitness records)
+fitnessSchema.index({ vehicleNumber: 1 })
+
+// Index 2: validTo (for filtering expired/expiring_soon/active status)
+fitnessSchema.index({ validTo: 1 })
+
+
+// Index 3: createdAt (for default sorting - newest first)
+fitnessSchema.index({ createdAt: -1 })
+
+const Fitness = mongoose.model('Fitness', fitnessSchema)
+
+module.exports = Fitness
+
+
+
+
