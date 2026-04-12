@@ -93,8 +93,8 @@ const Home = () => {
     setShowAddInsuranceModal(true)
   }
 
-  return (
-    <div className='min-h-screen bg-[radial-gradient(circle_at_top,_#eef2ff,_#f8fafc_45%,_#ffffff_100%)]'>
+return (
+    <div className='min-h-screen bg-[radial-gradient(circle_at_top,_#eff6ff,_#f8fafc_45%,_#ffffff_100%)]'>
       <main className='pl-2 pr-4 pt-6 pb-10 lg:pl-3 lg:pr-8 lg:pt-8'>
         <section className='w-full'>
           {showMobileSidebar && (
@@ -150,29 +150,37 @@ const Home = () => {
               />
             </div>
 
-            <div className='rounded-[32px] border border-indigo-100 bg-gradient-to-br from-white via-indigo-50/40 to-sky-50/70 p-4 shadow-[0_28px_60px_-34px_rgba(79,70,229,0.28)] md:p-5 lg:p-6'>
-              <div className='mb-4 flex justify-start'>
+            <div className='rounded-[32px] border border-slate-200 bg-white p-4 shadow-[0_28px_60px_-34px_rgba(15,23,42,0.25)] md:p-5 lg:p-6'>
+              <div className='mb-5 flex items-center justify-between'>
                 <SearchBar
                   value={searchQuery}
                   onChange={setSearchQuery}
                   placeholder='Search by vehicle number...'
                   toUpperCase={true}
                 />
+                <div className='hidden sm:flex items-center gap-2 text-sm text-slate-500'>
+                  <span className='font-semibold'>{filteredVehicles.length}</span> vehicle{filteredVehicles.length === 1 ? '' : 's'}
+                </div>
               </div>
 
               {loading ? (
                 <div className='grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3'>
                   {Array.from({ length: 6 }).map((_, index) => (
-                    <div key={index} className='h-56 animate-pulse rounded-3xl border border-slate-200 bg-white/70' />
+                    <div key={index} className='h-56 animate-pulse rounded-3xl border border-slate-200 bg-slate-100' />
                   ))}
                 </div>
               ) : error ? (
-                <div className='rounded-3xl border border-red-200 bg-red-50 px-5 py-6 text-center text-sm font-semibold text-red-600'>
+                <div className='rounded-3xl border border-red-200 bg-red-50 px-5 py-6 text-center text-sm font-bold text-red-600'>
                   {error}
                 </div>
               ) : filteredVehicles.length === 0 ? (
-                <div className='rounded-3xl border border-slate-200 bg-white px-5 py-10 text-center'>
-                  <p className='text-lg font-bold text-slate-800'>No matching vehicles found</p>
+                <div className='rounded-3xl border border-slate-200 bg-slate-50 px-5 py-12 text-center'>
+                  <svg className='mx-auto h-12 w-12 text-slate-300 mb-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={1.5} d='M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z' />
+                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={1.5} d='M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10m1 0l-2-2m2 2l2-2m-2 2v6m0 0v6m-5-6h5m5 0V6' />
+                  </svg>
+                  <p className='text-base font-bold text-slate-700'>No vehicles found</p>
+                  <p className='text-sm text-slate-500 mt-1'>Add a vehicle using the sidebar to get started</p>
                 </div>
               ) : (
                 <div className='grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3'>
@@ -191,29 +199,29 @@ const Home = () => {
                         }}
                         role='button'
                         tabIndex={0}
-                        className='group cursor-pointer overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_18px_45px_-30px_rgba(15,23,42,0.6)] transition-transform duration-200 hover:-translate-y-1'
+                        className='cursor-pointer overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_18px_45px_-30px_rgba(15,23,42,0.6)]'
                       >
                         <div className='p-5'>
-                          <div className='mx-auto max-w-[250px] rounded-[20px] border-[3px] border-slate-900 bg-gradient-to-b from-amber-200 to-yellow-300 px-3 py-4 shadow-inner'>
-                            <p className='text-center text-[11px] font-extrabold uppercase tracking-[0.35em] text-slate-700'>
-                              Vehicle No
+                          <div className='mx-auto max-w-[280px] rounded-[26px] border-[5px] border-slate-900 bg-gradient-to-b from-amber-200 to-yellow-300 px-5 py-5 shadow-[inset_0_2px_10px_rgba(255,255,255,0.45),0_8px_30px_-8px_rgba(0,0,0,0.25)]'>
+                            <p className='text-center text-[10px] font-extrabold uppercase tracking-[0.36em] text-slate-600'>
+                              Registration No
                             </p>
-                            <div className='mt-2 text-center text-xl font-black tracking-[0.14em] text-slate-950 md:text-2xl'>
+                            <div className='mt-3 text-center text-xl font-black tracking-[0.18em] text-slate-950 md:text-2xl'>
                               {vehicleNumber}
                             </div>
                           </div>
 
-                          <div className='mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2'>
-                            <div className='rounded-2xl border border-blue-200 bg-blue-50 px-4 py-3'>
-                              <p className='text-[11px] font-bold uppercase tracking-[0.22em] text-blue-600'>Chassis No</p>
-                              <p className='mt-1 truncate font-mono text-xs font-semibold text-blue-950 sm:text-[13px]' title={vehicle.chassisNumber || 'N/A'}>
+                          <div className='mt-3 grid grid-cols-2 gap-3'>
+                            <div className='rounded-2xl border border-blue-200 bg-blue-50/70 px-3 py-2.5'>
+                              <p className='text-[9px] font-bold uppercase tracking-[0.22em] text-blue-600'>Chassis</p>
+                              <p className='mt-1.5 truncate font-mono text-xs font-semibold text-blue-950' title={vehicle.chassisNumber || 'N/A'}>
                                 {vehicle.chassisNumber || 'N/A'}
                               </p>
                             </div>
 
-                            <div className='rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3'>
-                              <p className='text-[11px] font-bold uppercase tracking-[0.22em] text-emerald-600'>Engine No</p>
-                              <p className='mt-1 truncate font-mono text-xs font-semibold text-emerald-950 sm:text-[13px]' title={vehicle.engineNumber || 'N/A'}>
+                            <div className='rounded-2xl border border-emerald-200 bg-emerald-50/70 px-3 py-2.5'>
+                              <p className='text-[9px] font-bold uppercase tracking-[0.22em] text-emerald-600'>Engine</p>
+                              <p className='mt-1.5 truncate font-mono text-xs font-semibold text-emerald-950' title={vehicle.engineNumber || 'N/A'}>
                                 {vehicle.engineNumber || 'N/A'}
                               </p>
                             </div>
