@@ -517,36 +517,55 @@ const VehicleDetailPage = () => {
               <div className='mb-3 flex items-center justify-between'>
                 <p className='text-[10px] font-bold uppercase tracking-[0.22em] text-slate-300'>Uploaded RC Document</p>
                 {rcImageUrl && (
-                  <button
-                    type='button'
-                    onClick={handleShareRc}
-                    className='inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/20 text-white shadow-sm transition hover:bg-white/30'
-                    title='Share RC'
-                    aria-label='Share RC'
-                  >
-                    <Share className='h-4 w-4' />
-                  </button>
+                  <div className='flex items-center gap-2'>
+                    <a
+                      href={rcImageUrl}
+                      target='_blank'
+                      rel='noreferrer'
+                      className='inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/20 text-white shadow-sm transition hover:bg-white/30'
+                      title='Open in new tab'
+                    >
+                      <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 4v6m0-4l-4 4' />
+                      </svg>
+                    </a>
+                    <button
+                      type='button'
+                      onClick={handleShareRc}
+                      className='inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/20 text-white shadow-sm transition hover:bg-white/30'
+                      title='Share RC'
+                      aria-label='Share RC'
+                    >
+                      <Share className='h-4 w-4' />
+                    </button>
+                  </div>
                 )}
               </div>
               <div className='mt-1 overflow-hidden rounded-[22px] border border-white/10 bg-slate-950/30'>
                 {rcImageUrl ? (
                   rcImageIsPdf ? (
-                    <div className='flex min-h-[260px] flex-col items-center justify-center gap-3 p-5 text-center'>
-                      <p className='text-sm font-bold text-white'>RC PDF uploaded</p>
-                      <a href={rcImageUrl} target='_blank' rel='noreferrer' className='inline-flex items-center rounded-full bg-white px-4 py-2 text-sm font-bold text-slate-900'>
-                        Open RC PDF
+                    <div className='flex min-h-[80px] flex-col items-center justify-center gap-2 p-4 text-center'>
+                      <p className='text-xs font-bold text-white'>RC PDF uploaded</p>
+                      <a href={rcImageUrl} target='_blank' rel='noreferrer' className='inline-flex items-center rounded-full bg-white px-3 py-1.5 text-xs font-bold text-slate-900'>
+                        Open PDF
                       </a>
                     </div>
                   ) : (
-                    <img
-                      src={rcImageUrl}
-                      alt='Uploaded RC document'
-                      onClick={() => setShowRcImageViewer(true)}
-                      className='h-[320px] w-full cursor-pointer object-contain bg-white/90'
-                    />
+                    <a
+                      href={rcImageUrl}
+                      target='_blank'
+                      rel='noreferrer'
+                      className='flex items-center justify-center h-20 cursor-pointer'
+                    >
+                      <img
+                        src={rcImageUrl}
+                        alt='Uploaded RC document'
+                        className='h-full w-auto object-contain bg-white/90'
+                      />
+                    </a>
                   )
                 ) : (
-                  <div className='flex min-h-[260px] items-center justify-center p-5 text-center text-sm font-bold text-slate-400'>
+                  <div className='flex min-h-[80px] items-center justify-center p-4 text-center text-xs font-bold text-slate-400'>
                     No RC document uploaded
                   </div>
                 )}
@@ -613,14 +632,14 @@ const VehicleDetailPage = () => {
                             </button>
                           </div>
                         ) : (
-                          <div className='flex items-start gap-2'>
-                            <a href={row.documentUrl} target='_blank' rel='noreferrer' className='block w-fit overflow-hidden rounded-2xl border border-slate-200 bg-slate-50'>
-                              <img src={row.documentUrl} alt={`${row.type} document`} className='h-24 w-24 object-cover' />
+<div className='flex items-center gap-2'>
+                            <a href={row.documentUrl} target='_blank' rel='noreferrer' className='block w-fit overflow-hidden rounded-xl border border-slate-200 bg-slate-50'>
+                              <img src={row.documentUrl} alt={`${row.type} document`} className='h-8 w-auto max-w-[80px] object-contain' />
                             </a>
                             <button
                               type='button'
                               onClick={() => handleShareDocument(row.documentUrl, row.isPdf, row.type)}
-                              className='inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-900 transition hover:bg-slate-100'
+                              className='inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-900 transition hover:bg-slate-100'
                               title={`Share ${row.type}`}
                               aria-label={`Share ${row.type}`}
                             >

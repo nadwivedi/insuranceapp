@@ -1,10 +1,32 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const ImageViewer = ({ isOpen, onClose, imageUrl, title = 'Image Viewer' }) => {
   const [zoom, setZoom] = useState(1)
   const [position, setPosition] = useState({ x: 0, y: 0 })
   const [isDragging, setIsDragging] = useState(false)
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
+
+  const handleClose = () => {
+    setZoom(1)
+    setPosition({ x: 0, y: 0 })
+    onClose()
+  }
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        handleClose()
+      }
+    }
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleKeyDown)
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [isOpen, onClose])
 
   if (!isOpen) return null
 
@@ -60,12 +82,6 @@ const ImageViewer = ({ isOpen, onClose, imageUrl, title = 'Image Viewer' }) => {
     setTimeout(() => {
       window.print()
     }, 500)
-  }
-
-  const handleClose = () => {
-    setZoom(1)
-    setPosition({ x: 0, y: 0 })
-    onClose()
   }
 
   return (
