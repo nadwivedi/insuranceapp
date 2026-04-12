@@ -174,17 +174,17 @@ const RcPlate = ({ vehicleNumber }) => {
 
   if (!parts) {
     return (
-      <div className='mx-auto max-w-[320px] rounded-[26px] border-[4px] border-slate-900 bg-gradient-to-b from-amber-200 to-yellow-300 px-4 py-5 shadow-[inset_0_2px_10px_rgba(255,255,255,0.45)]'>
-        <p className='text-center text-[11px] font-extrabold uppercase tracking-[0.34em] text-slate-700'>Registration No</p>
-        <div className='mt-3 text-center text-2xl font-black tracking-[0.18em] text-slate-950 md:text-3xl'>{vehicleNumber || 'N/A'}</div>
+      <div className='mx-auto max-w-[320px] rounded-[26px] border-[4px] border-slate-900 bg-gradient-to-b from-amber-200 to-yellow-300 px-4 py-5 shadow-[inset_0_2px_10px_rgba(255,255,255,0.45)] lg:mx-0'>
+        <p className='text-left text-[11px] font-extrabold uppercase tracking-[0.34em] text-slate-700'>Registration No</p>
+        <div className='mt-3 text-left text-2xl font-black tracking-[0.18em] text-slate-950 md:text-3xl'>{vehicleNumber || 'N/A'}</div>
       </div>
     )
   }
 
   return (
-    <div className='mx-auto max-w-[340px] rounded-[26px] border-[4px] border-slate-900 bg-gradient-to-b from-amber-200 to-yellow-300 px-4 py-5 shadow-[inset_0_2px_10px_rgba(255,255,255,0.45)]'>
-      <p className='text-center text-[11px] font-extrabold uppercase tracking-[0.34em] text-slate-700'>Registration No</p>
-      <div className='mt-3 flex items-center justify-center gap-2 text-slate-950'>
+    <div className='mx-auto max-w-[340px] rounded-[26px] border-[4px] border-slate-900 bg-gradient-to-b from-amber-200 to-yellow-300 px-4 py-5 shadow-[inset_0_2px_10px_rgba(255,255,255,0.45)] lg:mx-0'>
+      <p className='text-left text-[11px] font-extrabold uppercase tracking-[0.34em] text-slate-700'>Registration No</p>
+      <div className='mt-3 flex items-center gap-2 text-slate-950'>
         <span className='rounded-md bg-white/50 px-2 py-1 text-lg font-black tracking-[0.12em] md:text-xl'>{parts.stateCode}</span>
         <span className='rounded-md bg-white/50 px-2 py-1 text-lg font-black tracking-[0.12em] md:text-xl'>{parts.districtCode}</span>
         <span className='rounded-md bg-white/50 px-2 py-1 text-lg font-black tracking-[0.12em] md:text-xl'>{parts.series}</span>
@@ -444,11 +444,19 @@ const VehicleDetailPage = () => {
     <div className='min-h-screen bg-[radial-gradient(circle_at_top,_#eff6ff,_#f8fafc_45%,_#ffffff_100%)]'>
       <div className='mx-auto max-w-7xl px-4 py-6 lg:px-6 lg:py-8'>
         <section className='overflow-hidden rounded-[34px] border border-slate-200 bg-white shadow-[0_24px_70px_-48px_rgba(15,23,42,0.55)]'>
-          <div className='grid gap-6 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 px-5 py-6 text-white lg:grid-cols-[minmax(0,1.05fr)_360px] lg:px-8'>
-            <div>
+<div className='grid gap-6 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 px-5 py-6 text-white lg:grid-cols-[minmax(0,1fr)_380px] lg:px-6 lg:py-5'>
+            <div className='grid gap-5 content-start'>
               <RcPlate vehicleNumber={vehicleNumber} />
 
-              <div className='mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3'>
+              <div className='grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3'>
+                <div className='rounded-2xl border border-white/10 bg-white/10 px-4 py-3 backdrop-blur'>
+                  <p className='text-[10px] font-bold uppercase tracking-[0.22em] text-slate-300'>Owner Name</p>
+                  <p className='mt-1 text-sm font-semibold text-white'>{vehicle.ownerName || 'N/A'}</p>
+                </div>
+                <div className='rounded-2xl border border-white/10 bg-white/10 px-4 py-3 backdrop-blur'>
+                  <p className='text-[10px] font-bold uppercase tracking-[0.22em] text-slate-300'>S/W/D Of</p>
+                  <p className='mt-1 text-sm font-semibold text-white'>{vehicle.sonWifeDaughterOf || 'N/A'}</p>
+                </div>
                 <div className='rounded-2xl border border-white/10 bg-white/10 px-4 py-3 backdrop-blur'>
                   <p className='text-[10px] font-bold uppercase tracking-[0.22em] text-slate-300'>Registration Date</p>
                   <p className='mt-1 text-sm font-semibold text-white'>{vehicle.dateOfRegistration || 'N/A'}</p>
@@ -461,6 +469,31 @@ const VehicleDetailPage = () => {
                   <p className='text-[10px] font-bold uppercase tracking-[0.22em] text-emerald-100'>Engine Number</p>
                   <p className='mt-1 break-all text-sm font-semibold text-white'>{vehicle.engineNumber || 'N/A'}</p>
                 </div>
+                <div className='rounded-2xl border border-white/10 bg-white/10 px-4 py-3 backdrop-blur'>
+                  <p className='text-[10px] font-bold uppercase tracking-[0.22em] text-slate-300'>Maker Name</p>
+                  <p className='mt-1 text-sm font-semibold text-white'>{vehicle.makerName || 'N/A'}</p>
+                </div>
+                <div className='rounded-2xl border border-white/10 bg-white/10 px-4 py-3 backdrop-blur'>
+                  <p className='text-[10px] font-bold uppercase tracking-[0.22em] text-slate-300'>Maker Model</p>
+                  <p className='mt-1 text-sm font-semibold text-white'>{vehicle.makerModel || 'N/A'}</p>
+                </div>
+                <div className='rounded-2xl border border-white/10 bg-white/10 px-4 py-3 backdrop-blur'>
+                  <p className='text-[10px] font-bold uppercase tracking-[0.22em] text-slate-300'>Vehicle Class</p>
+                  <p className='mt-1 text-sm font-semibold text-white'>{vehicle.vehicleClass || 'N/A'}</p>
+                </div>
+                <div className='rounded-2xl border border-white/10 bg-white/10 px-4 py-3 backdrop-blur'>
+                  <p className='text-[10px] font-bold uppercase tracking-[0.22em] text-slate-300'>Fuel Type</p>
+                  <p className='mt-1 text-sm font-semibold text-white'>{vehicle.fuelType || 'N/A'}</p>
+                </div>
+                <div className='rounded-2xl border border-white/10 bg-white/10 px-4 py-3 backdrop-blur'>
+                  <p className='text-[10px] font-bold uppercase tracking-[0.22em] text-slate-300'>Manufacture Year</p>
+                  <p className='mt-1 text-sm font-semibold text-white'>{vehicle.manufactureYear || 'N/A'}</p>
+                </div>
+              </div>
+
+              <div className='rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur'>
+                <p className='text-[10px] font-bold uppercase tracking-[0.22em] text-slate-300'>Address</p>
+                <p className='mt-1 text-sm font-semibold text-white'>{vehicle.address || 'N/A'}</p>
               </div>
             </div>
 
@@ -500,17 +533,6 @@ const VehicleDetailPage = () => {
                   <Share className='h-5 w-5' />
                 </button>
               )}
-            </div>
-          </div>
-
-          <div className='border-t border-slate-200 p-5 lg:p-6'>
-            <div className='grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4'>
-              {rcAdditionalFields.map(([label, value]) => (
-                <div key={label} className='rounded-3xl border border-slate-200 bg-slate-50 p-4'>
-                  <p className='text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500'>{label}</p>
-                  <p className='mt-2 break-words text-sm font-semibold text-slate-900'>{value}</p>
-                </div>
-              ))}
             </div>
           </div>
         </section>

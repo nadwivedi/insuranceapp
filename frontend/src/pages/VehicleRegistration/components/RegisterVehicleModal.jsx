@@ -63,8 +63,6 @@ const RegisterVehicleModal = ({ isOpen, onClose, onSuccess, editData }) => {
   // Refs for party modal Enter key navigation
   const partyNameRef = useRef(null)
   const partySWDRef = useRef(null)
-  const partyMobileRef = useRef(null)
-  const partyEmailRef = useRef(null)
   const partyAddressRef = useRef(null)
   const partySaveButtonRef = useRef(null)
 
@@ -1946,10 +1944,10 @@ const RegisterVehicleModal = ({ isOpen, onClose, onSuccess, editData }) => {
                   </div>
                 </div>
 
-                {/* Row 2: Address, Mobile Number and Email */}
-                <div className='grid grid-cols-1 md:grid-cols-4 gap-3 md:gap-5'>
-                  {/* Address - Takes 2 columns (50%) */}
-                  <div className='group md:col-span-2'>
+                {/* Row 2: Address */}
+                <div className='grid grid-cols-1 gap-3 md:gap-5'>
+                  {/* Address - Takes full width */}
+                  <div className='group'>
                     <label className='block text-xs md:text-sm font-semibold text-gray-700 mb-1.5 md:mb-2'>
                       Address
                     </label>
@@ -1968,53 +1966,6 @@ const RegisterVehicleModal = ({ isOpen, onClose, onSuccess, editData }) => {
                         onKeyDown={handleKeyDown}
                         placeholder='Enter complete address with pin code'
                         className='w-full pl-9 md:pl-12 pr-2.5 md:pr-4 py-1.5 md:py-2 text-xs md:text-sm bg-white border-2 border-gray-200 rounded-lg md:rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 uppercase font-semibold text-gray-800 placeholder-gray-400'
-                      />
-                    </div>
-                  </div>
-
-                  {/* Mobile Number - Takes 1 column (25%) */}
-                  <div className='group md:col-span-1'>
-                    <label className='block text-xs md:text-sm font-semibold text-gray-700 mb-1.5 md:mb-2'>
-                      Mobile Number
-                    </label>
-                    <div className='relative'>
-                      <div className='absolute inset-y-0 left-0 pl-2.5 md:pl-4 flex items-center pointer-events-none'>
-                        <svg className='w-4 h-4 md:w-5 md:h-5 text-purple-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                          <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z' />
-                        </svg>
-                      </div>
-                      <input
-                        type='tel'
-                        name='mobileNumber'
-                        value={formData.mobileNumber}
-                        onChange={handleChange}
-                        onKeyDown={handleKeyDown}
-                        maxLength='10'
-                        placeholder='Enter 10-digit mobile number'
-                        className='w-full pl-9 md:pl-12 pr-2.5 md:pr-4 py-1.5 md:py-2 text-xs md:text-sm bg-white border-2 border-gray-200 rounded-lg md:rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 font-semibold text-gray-800 placeholder-gray-400'
-                      />
-                    </div>
-                  </div>
-
-                  {/* Email - Takes 1 column (25%) */}
-                  <div className='group md:col-span-1'>
-                    <label className='block text-xs md:text-sm font-semibold text-gray-700 mb-1.5 md:mb-2'>
-                      Email Address
-                    </label>
-                    <div className='relative'>
-                      <div className='absolute inset-y-0 left-0 pl-2.5 md:pl-4 flex items-center pointer-events-none'>
-                        <svg className='w-4 h-4 md:w-5 md:h-5 text-purple-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                          <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z' />
-                        </svg>
-                      </div>
-                      <input
-                        type='email'
-                        name='email'
-                        value={formData.email}
-                        onChange={handleChange}
-                        onKeyDown={handleKeyDown}
-                        placeholder='Enter email address'
-                        className='w-full pl-9 md:pl-12 pr-2.5 md:pr-4 py-1.5 md:py-2 text-xs md:text-sm bg-white border-2 border-gray-200 rounded-lg md:rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 font-semibold text-gray-800 placeholder-gray-400'
                       />
                     </div>
                   </div>
@@ -2198,41 +2149,6 @@ const RegisterVehicleModal = ({ isOpen, onClose, onSuccess, editData }) => {
                   onKeyDown={(e) => handlePartyKeyDown(e, partyMobileRef)}
                   placeholder='Father/Husband name'
                   className='w-full px-3 py-2 text-sm bg-white border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all uppercase font-semibold text-gray-800 placeholder:font-normal placeholder-gray-400'
-                />
-              </div>
-
-              {/* Mobile */}
-              <div>
-                <label className='block text-sm font-semibold text-gray-700 mb-1'>
-                  Mobile
-                </label>
-                <input
-                  type='tel'
-                  name='mobile'
-                  ref={partyMobileRef}
-                  value={newParty.mobile}
-                  onChange={handleNewPartyChange}
-                  onKeyDown={(e) => handlePartyKeyDown(e, partyEmailRef)}
-                  maxLength='10'
-                  placeholder='9876543210'
-                  className='w-full px-3 py-2 text-sm bg-white border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all font-semibold text-gray-800 placeholder:font-normal placeholder-gray-400'
-                />
-              </div>
-
-              {/* Email */}
-              <div>
-                <label className='block text-sm font-semibold text-gray-700 mb-1'>
-                  Email
-                </label>
-                <input
-                  type='email'
-                  name='email'
-                  ref={partyEmailRef}
-                  value={newParty.email}
-                  onChange={handleNewPartyChange}
-                  onKeyDown={(e) => handlePartyKeyDown(e, partyAddressRef)}
-                  placeholder='email@example.com'
-                  className='w-full px-3 py-2 text-sm bg-white border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all font-semibold text-gray-800 placeholder:font-normal placeholder-gray-400'
                 />
               </div>
 
