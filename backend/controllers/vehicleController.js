@@ -81,6 +81,46 @@ const buildSearchFilter = (search) => {
   }
 }
 
+const parseDateString = (dateStr) => {
+  if (!dateStr || typeof dateStr !== 'string') return null
+
+  const parts = dateStr.trim().split(/[/-]/)
+  if (parts.length !== 3) return null
+
+  const day = Number(parts[0])
+  const month = Number(parts[1]) - 1
+  const year = Number(parts[2])
+  if ([day, month, year].some(Number.isNaN) || year < 1900) return null
+
+  const date = new Date(year, month, day)
+  if (Number.isNaN(date.getTime())) return null
+  if (date.getDate() !== day || date.getMonth() !== month || date.getFullYear() !== year) return null
+
+  return date
+}
+
+const calculateDocumentStatus = (expiryDateStr) => {
+  const expiryDate = parseDateString(expiryDateStr)
+  if (!expiryDate) return 'unknown'
+
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  expiryDate.setHours(0, 0, 0, 0)
+
+  const diffMs = expiryDate.getTime() - today.getTime()
+  const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24))
+
+  if (diffDays < 0) return 'expired'
+  if (diffDays <= 30) return 'expiring_soon'
+  return 'active'
+}
+
+const mapRecordsWithStatus = (records, expiryField) =>
+  records.map((record) => ({
+    ...record,
+    status: calculateDocumentStatus(record?.[expiryField]),
+  }))
+
 const getVehicles = async (req, res) => {
   try {
     const page = Math.max(Number(req.query.page) || 1, 1)
@@ -139,6 +179,12 @@ const getVehicleDetail = async (req, res) => {
       Gps.find({ vehicleNumber }).sort({ createdAt: -1 }).lean(),
     ])
 
+    const fitnessWithStatus = mapRecordsWithStatus(fitnessRecords, 'validTo')
+    const taxWithStatus = mapRecordsWithStatus(taxRecords, 'taxTo')
+    const pucWithStatus = mapRecordsWithStatus(pucRecords, 'validTo')
+    const insuranceWithStatus = mapRecordsWithStatus(insuranceRecords, 'validTo')
+    const gpsWithStatus = mapRecordsWithStatus(gpsRecords, 'validTo')
+
     res.json({
       success: true,
       data: {
@@ -151,19 +197,19 @@ const getVehicleDetail = async (req, res) => {
             pucRecords.length +
             insuranceRecords.length +
             gpsRecords.length,
-          fitnessCount: fitnessRecords.length,
-          taxCount: taxRecords.length,
-          pucCount: pucRecords.length,
-          insuranceCount: insuranceRecords.length,
-          gpsCount: gpsRecords.length,
+          fitnessCount: fitnessWithStatus.length,
+          taxCount: taxWithStatus.length,
+          pucCount: pucWithStatus.length,
+          insuranceCount: insuranceWithStatus.length,
+          gpsCount: gpsWithStatus.length,
         },
         records: {
           rc: vehicle,
-          fitness: fitnessRecords,
-          tax: taxRecords,
-          puc: pucRecords,
-          insurance: insuranceRecords,
-          gps: gpsRecords,
+          fitness: fitnessWithStatus,
+          tax: taxWithStatus,
+          puc: pucWithStatus,
+          insurance: insuranceWithStatus,
+          gps: gpsWithStatus,
         },
       },
     })

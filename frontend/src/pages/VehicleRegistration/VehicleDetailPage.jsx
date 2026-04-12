@@ -169,6 +169,22 @@ const getDocumentUrl = (value) => {
   return `${API_URL}${value}`
 }
 
+const getStatusPill = (status) => {
+  if (status === 'active') {
+    return { label: 'Active', className: 'bg-emerald-100 text-emerald-700 border-emerald-200' }
+  }
+
+  if (status === 'expiring_soon') {
+    return { label: 'Expiring Soon', className: 'bg-amber-100 text-amber-700 border-amber-200' }
+  }
+
+  if (status === 'expired') {
+    return { label: 'Expired', className: 'bg-red-100 text-red-700 border-red-200' }
+  }
+
+  return { label: 'Unknown', className: 'bg-slate-100 text-slate-600 border-slate-200' }
+}
+
 const RcPlate = ({ vehicleNumber }) => {
   const parts = getVehicleNumberParts(vehicleNumber)
 
@@ -350,6 +366,7 @@ const VehicleDetailPage = () => {
             type: label,
             validFrom: record[dateFromKey] || 'N/A',
             validTo: record[dateToKey] || 'N/A',
+            status: record.status || 'unknown',
             documentUrl,
             isPdf,
             hasDocument: Boolean(documentUrl),
@@ -624,15 +641,24 @@ const VehicleDetailPage = () => {
                     <th className='px-4 py-3 text-left text-[11px] font-bold uppercase tracking-[0.2em] text-slate-500'>Document Type</th>
                     <th className='px-4 py-3 text-left text-[11px] font-bold uppercase tracking-[0.2em] text-slate-500'>Valid From</th>
                     <th className='px-4 py-3 text-left text-[11px] font-bold uppercase tracking-[0.2em] text-slate-500'>Valid To</th>
+                    <th className='px-4 py-3 text-left text-[11px] font-bold uppercase tracking-[0.2em] text-slate-500'>Status</th>
                     <th className='px-4 py-3 text-left text-[11px] font-bold uppercase tracking-[0.2em] text-slate-500'>Document</th>
                   </tr>
                 </thead>
                 <tbody className='divide-y divide-slate-200 bg-white'>
-                  {relatedDocumentRows.map((row) => (
+                  {relatedDocumentRows.map((row) => {
+                    const statusPill = getStatusPill(row.status)
+
+                    return (
                     <tr key={row.id} className='align-top'>
                       <td className='px-4 py-4 text-sm font-bold text-slate-900'>{row.type}</td>
                       <td className='px-4 py-4 text-sm font-bold text-emerald-600'>{row.validFrom}</td>
                       <td className='px-4 py-4 text-sm font-bold text-red-600'>{row.validTo}</td>
+                      <td className='px-4 py-4'>
+                        <span className={`inline-flex rounded-full border px-3 py-1 text-xs font-bold ${statusPill.className}`}>
+                          {statusPill.label}
+                        </span>
+                      </td>
                       <td className='px-4 py-4'>
                         {!row.hasDocument ? (
                           <span className='text-sm font-bold text-slate-400'>No document</span>
@@ -673,7 +699,7 @@ const VehicleDetailPage = () => {
                         )}
                       </td>
                     </tr>
-                  ))}
+                  )})}
                 </tbody>
               </table>
             </div>
