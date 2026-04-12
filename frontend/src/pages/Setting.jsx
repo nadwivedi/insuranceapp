@@ -1,15 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import axios from 'axios'
-import { toast } from 'react-toastify'
-import * as XLSX from 'xlsx'
-import ImportModal from '../components/ImportModal'
-import ExportModal from '../components/ExportModal'
-import ExportExcelModal from '../components/ExportExcelModal'
 import { getAllThemes, getAllVehicleNumberDesigns } from '../context/ThemeContext'
-
-const API_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'
 
 const Setting = () => {
   const navigate = useNavigate()
@@ -17,10 +9,6 @@ const Setting = () => {
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [isExporting, setIsExporting] = useState(false)
-  const [isImportModalOpen, setIsImportModalOpen] = useState(false)
-  const [isExportModalOpen, setIsExportModalOpen] = useState(false)
-  const [isExportExcelModalOpen, setIsExportExcelModalOpen] = useState(false)
 
   const themes = getAllThemes()
   const currentTheme = localStorage.getItem('theme') || 'theme1'
@@ -41,133 +29,6 @@ const Setting = () => {
   const handleLogout = async () => {
     await logout()
     navigate('/login')
-  }
-
-  // Export all data as Excel (separate files for each collection)
-  const handleExportExcel = async () => {
-    setIsExporting(true)
-    try {
-      toast.info('Starting Excel export...', { position: 'top-right', autoClose: 2000 })
-
-      // List of all collections to export
-      const collections = [
-        { name: 'Vehicle', endpoint: '/api/vehicle/export' },
-        { name: 'National Permit', endpoint: '/api/national-permits/export' },
-        { name: 'Temporary Permit', endpoint: '/api/temporary-permits/export' },
-        { name: 'CG Permit', endpoint: '/api/cg-permits/export' },
-        { name: 'Fitness', endpoint: '/api/fitness/export' },
-        { name: 'Insurance', endpoint: '/api/insurance/export' },
-        { name: 'Tax', endpoint: '/api/tax/export' },
-        { name: 'Driving License', endpoint: '/api/driving-licenses/export' }
-      ]
-
-      // Fetch data from all collections
-      for (const collection of collections) {
-        try {
-          const response = await axios.get(`${API_URL}${collection.endpoint}`, { withCredentials: true })
-          const data = response.data.data || response.data || []
-
-          if (data.length === 0) {
-            console.log(`No data found for ${collection.name}`)
-            continue
-          }
-
-          // Convert to worksheet
-          const worksheet = XLSX.utils.json_to_sheet(data)
-          const workbook = XLSX.utils.book_new()
-          XLSX.utils.book_append_sheet(workbook, worksheet, 'Data')
-
-          // Generate filename with timestamp
-          const timestamp = new Date().toISOString().split('T')[0]
-          const filename = `${collection.name.replace(/ /g, '_')}_${timestamp}.xlsx`
-
-          // Download the file
-          XLSX.writeFile(workbook, filename)
-
-          await new Promise(resolve => setTimeout(resolve, 500)) // Small delay between downloads
-        } catch (error) {
-          console.error(`Error exporting ${collection.name}:`, error)
-        }
-      }
-
-      toast.success('Excel export completed successfully!', {
-        position: 'top-right',
-        autoClose: 3000
-      })
-    } catch (error) {
-      console.error('Error during Excel export:', error)
-      toast.error('Failed to export data as Excel', {
-        position: 'top-right',
-        autoClose: 3000
-      })
-    } finally {
-      setIsExporting(false)
-    }
-  }
-
-  // Export all data as JSON (separate files for each collection)
-  const handleExportJSON = async () => {
-    setIsExporting(true)
-    try {
-      toast.info('Starting JSON export...', { position: 'top-right', autoClose: 2000 })
-
-      // List of all collections to export
-      const collections = [
-        { name: 'Vehicle', endpoint: '/api/vehicle/export' },
-        { name: 'National Permit', endpoint: '/api/national-permits/export' },
-        { name: 'Temporary Permit', endpoint: '/api/temporary-permits/export' },
-        { name: 'CG Permit', endpoint: '/api/cg-permits/export' },
-        { name: 'Fitness', endpoint: '/api/fitness/export' },
-        { name: 'Insurance', endpoint: '/api/insurance/export' },
-        { name: 'Tax', endpoint: '/api/tax/export' },
-        { name: 'Driving License', endpoint: '/api/driving-licenses/export' }
-      ]
-
-      // Fetch data from all collections
-      for (const collection of collections) {
-        try {
-          const response = await axios.get(`${API_URL}${collection.endpoint}`, { withCredentials: true })
-          const data = response.data.data || response.data || []
-
-          if (data.length === 0) {
-            console.log(`No data found for ${collection.name}`)
-            continue
-          }
-
-          // Create JSON blob
-          const jsonString = JSON.stringify(data, null, 2)
-          const blob = new Blob([jsonString], { type: 'application/json' })
-          const url = window.URL.createObjectURL(blob)
-
-          // Create download link
-          const link = document.createElement('a')
-          link.href = url
-          const timestamp = new Date().toISOString().split('T')[0]
-          link.download = `${collection.name.replace(/ /g, '_')}_${timestamp}.json`
-          document.body.appendChild(link)
-          link.click()
-          document.body.removeChild(link)
-          window.URL.revokeObjectURL(url)
-
-          await new Promise(resolve => setTimeout(resolve, 500)) // Small delay between downloads
-        } catch (error) {
-          console.error(`Error exporting ${collection.name}:`, error)
-        }
-      }
-
-      toast.success('JSON export completed successfully!', {
-        position: 'top-right',
-        autoClose: 3000
-      })
-    } catch (error) {
-      console.error('Error during JSON export:', error)
-      toast.error('Failed to export data as JSON', {
-        position: 'top-right',
-        autoClose: 3000
-      })
-    } finally {
-      setIsExporting(false)
-    }
   }
 
   return (
@@ -278,85 +139,7 @@ const Setting = () => {
           </div>
         </div>
 
-        {/* Export Data */}
-        <div className='bg-white rounded-xl p-6 shadow-lg border border-gray-200'>
-          <div className='flex items-center gap-3 mb-4'>
-            <div className='w-10 h-10 bg-gradient-to-br from-green-500 to-teal-600 rounded-lg flex items-center justify-center text-white text-xl'>
-              📊
-            </div>
-            <div>
-              <h2 className='text-lg font-bold text-gray-800'>Export Data</h2>
-              <p className='text-xs text-gray-500'>Download your data in various formats</p>
-            </div>
-          </div>
-
-          <div className='space-y-3'>
-            <label className='text-sm font-semibold text-gray-700'>Export Options</label>
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
-              <button
-                onClick={() => setIsExportExcelModalOpen(true)}
-                className='flex items-center gap-3 p-4 bg-gradient-to-r from-green-50 to-teal-50 hover:from-green-100 hover:to-teal-100 rounded-lg transition border border-green-200 group'
-              >
-                <div className='w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center text-white text-sm font-bold group-hover:scale-110 transition-transform'>
-                  XLS
-                </div>
-                <div className='text-left flex-1'>
-                  <div className='font-semibold text-gray-800 text-sm'>Export as Excel</div>
-                  <div className='text-xs text-gray-500'>Choose data types to export</div>
-                </div>
-                <div className='text-gray-400 group-hover:text-green-600'>→</div>
-              </button>
-
-              <button
-                onClick={() => setIsExportModalOpen(true)}
-                className='flex items-center gap-3 p-4 bg-gradient-to-r from-orange-50 to-red-50 hover:from-orange-100 hover:to-red-100 rounded-lg transition border border-orange-200 group'
-              >
-                <div className='w-12 h-12 bg-orange-600 rounded-lg flex items-center justify-center text-white text-sm font-bold group-hover:scale-110 transition-transform'>
-                  JSON
-                </div>
-                <div className='text-left flex-1'>
-                  <div className='font-semibold text-gray-800 text-sm'>Export as JSON</div>
-                  <div className='text-xs text-gray-500'>Choose data types to export</div>
-                </div>
-                <div className='text-gray-400 group-hover:text-orange-600'>→</div>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Import Data */}
-        <div className='bg-white rounded-xl p-6 shadow-lg border border-gray-200'>
-          <div className='flex items-center gap-3 mb-4'>
-            <div className='w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center text-white text-xl'>
-              📥
-            </div>
-            <div>
-              <h2 className='text-lg font-bold text-gray-800'>Import Data</h2>
-              <p className='text-xs text-gray-500'>Upload JSON files to import data into the system</p>
-            </div>
-          </div>
-
-          <div className='space-y-3'>
-            <p className='text-sm text-gray-600'>
-              Import bulk data from JSON files for various modules like Driving License, Insurance, Tax, Fitness, and more.
-            </p>
-            <button
-              onClick={() => setIsImportModalOpen(true)}
-              className='flex items-center gap-3 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 rounded-lg transition border border-blue-200 group w-full md:w-auto'
-            >
-              <div className='w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center text-white text-2xl group-hover:scale-110 transition-transform'>
-                📥
-              </div>
-              <div className='text-left flex-1'>
-                <div className='font-semibold text-gray-800 text-sm'>Import Data</div>
-                <div className='text-xs text-gray-500'>Upload and import JSON files</div>
-              </div>
-              <div className='text-gray-400 group-hover:text-blue-600'>→</div>
-            </button>
-          </div>
-        </div>
-
-        {/* Change Password */}
+{/* Change Password */}
         <div className='bg-white rounded-xl p-6 shadow-lg border border-gray-200'>
           <div className='flex items-center gap-3 mb-4'>
             <div className='w-10 h-10 bg-gradient-to-br from-red-500 to-pink-600 rounded-lg flex items-center justify-center text-white text-xl'>
@@ -498,24 +281,7 @@ const Setting = () => {
         </div>
       </div>
 
-      {/* Import Modal */}
-      <ImportModal
-        isOpen={isImportModalOpen}
-        onClose={() => setIsImportModalOpen(false)}
-      />
-
-      {/* Export JSON Modal */}
-      <ExportModal
-        isOpen={isExportModalOpen}
-        onClose={() => setIsExportModalOpen(false)}
-      />
-
-      {/* Export Excel Modal */}
-      <ExportExcelModal
-        isOpen={isExportExcelModalOpen}
-        onClose={() => setIsExportExcelModalOpen(false)}
-      />
-    </div>
+</div>
   )
 }
 
