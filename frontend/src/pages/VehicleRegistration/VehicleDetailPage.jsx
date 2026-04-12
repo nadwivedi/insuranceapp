@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import { getVehicleNumberParts } from '../../utils/vehicleNoCheck'
 import { getDaysRemaining } from '../../utils/dateHelpers'
@@ -254,7 +254,6 @@ const RecordSection = ({ title, records, dateFromKey, dateToKey, dateFromLabel, 
 
 const VehicleDetailPage = () => {
   const { id } = useParams()
-  const theme = getTheme()
   const vehicleDesign = getVehicleNumberDesign()
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -344,9 +343,6 @@ const VehicleDetailPage = () => {
       <div className='min-h-screen bg-[radial-gradient(circle_at_top,_#eff6ff,_#f8fafc_45%,_#ffffff_100%)] px-4 py-8'>
         <div className='mx-auto max-w-3xl rounded-[32px] border border-red-200 bg-white p-8 text-center shadow-[0_24px_70px_-48px_rgba(15,23,42,0.55)]'>
           <p className='text-lg font-bold text-red-700'>{error || 'Vehicle detail not found.'}</p>
-          <Link to='/vehicle' className='mt-5 inline-flex items-center rounded-full bg-slate-900 px-5 py-3 text-sm font-bold text-white'>
-            Back To Vehicle List
-          </Link>
         </div>
       </div>
     )
@@ -359,16 +355,6 @@ const VehicleDetailPage = () => {
   return (
     <div className='min-h-screen bg-[radial-gradient(circle_at_top,_#eff6ff,_#f8fafc_45%,_#ffffff_100%)]'>
       <div className='mx-auto max-w-7xl px-4 py-6 lg:px-6 lg:py-8'>
-        <div className='mb-5 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between'>
-          <div>
-            <p className='text-[11px] font-bold uppercase tracking-[0.26em] text-slate-500'>Vehicle Detail Page</p>
-            <h1 className='mt-1 text-3xl font-black text-slate-900'>All records for one vehicle</h1>
-          </div>
-          <Link to='/vehicle' className={`inline-flex w-fit items-center rounded-full px-5 py-3 text-sm font-bold text-white shadow-lg ${theme.navbar}`}>
-            Back To Vehicle List
-          </Link>
-        </div>
-
         <section className='overflow-hidden rounded-[34px] border border-slate-200 bg-white shadow-[0_24px_70px_-48px_rgba(15,23,42,0.55)]'>
           <div className='grid gap-6 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 px-5 py-6 text-white lg:grid-cols-[minmax(0,1.05fr)_360px] lg:px-8'>
             <div>
