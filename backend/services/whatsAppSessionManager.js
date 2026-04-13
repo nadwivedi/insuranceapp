@@ -105,7 +105,7 @@ class WhatsAppSessionManager {
       session = await WhatsAppSession.findOneAndUpdate(
         { sessionKey: this.defaultSessionKey },
         { $set: { isActive: true, displayName: 'Primary Session' } },
-        { upsert: true, new: true, setDefaultsOnInsert: true }
+        { upsert: true, returnDocument: 'after', setDefaultsOnInsert: true }
       )
     }
 
@@ -141,7 +141,7 @@ class WhatsAppSessionManager {
           displayName: update.displayName || undefined,
         },
       },
-      { upsert: true, new: true, setDefaultsOnInsert: true }
+      { upsert: true, returnDocument: 'after', setDefaultsOnInsert: true }
     )
   }
 
