@@ -86,7 +86,7 @@ const Login = () => {
   return (
     <div className='min-h-screen bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 flex flex-col items-center justify-center p-4'>
       <div className='mb-6 text-center'>
-        <h1 className='text-4xl font-black text-white drop-shadow-lg'>Transport Software</h1>
+        <h1 className='text-4xl font-black text-white drop-shadow-lg'>Insurance Seva</h1>
       </div>
       <div className='w-full max-w-md'>
         <div className='bg-white rounded-2xl shadow-2xl p-8'>
@@ -96,7 +96,7 @@ const Login = () => {
                 <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M8 17h8m-4-4v4m-6-4h.01M19 16V8a2 2 0 00-2-2H7a2 2 0 00-2 2v8m4 0V5a2 2 0 012-2h2a2 2 0 012 2v11m-6 4h8a2 2 0 002-2v-4a2 2 0 00-2-2h-4a2 2 0 00-2 2v4a2 2 0 002 2z' />
               </svg>
             </div>
-            <h1 className='text-3xl font-black text-gray-800 mb-2'>Transport Login</h1>
+            <h1 className='text-3xl font-black text-gray-800 mb-2'>Insurance Seva Login</h1>
             <p className='text-gray-500 text-sm'>Sign in to access your account</p>
           </div>
 
@@ -181,7 +181,7 @@ className='w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outlin
           {/* Footer */}
           <div className='mt-8 text-center'>
             <p className='text-xs text-gray-400'>
-              Transport Management System
+              Insurance Seva
             </p>
           </div>
         </div>
