@@ -107,64 +107,13 @@ return (
     <div className='min-h-screen bg-[radial-gradient(circle_at_top,_#eff6ff,_#f8fafc_45%,_#ffffff_100%)]'>
       <main className='pl-2 pr-4 pt-6 pb-10 lg:pl-3 lg:pr-8 lg:pt-8'>
         <section className='w-full'>
-          {showMobileSidebar && (
-            <div className='fixed inset-0 z-40 bg-slate-950/45 lg:hidden' onClick={() => setShowMobileSidebar(false)} />
-          )}
-
-          <div className='mb-4 flex items-center justify-between lg:hidden'>
-            <button
-              type='button'
-              onClick={() => setShowMobileSidebar(true)}
-              className='inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-800 shadow-[0_16px_35px_-25px_rgba(15,23,42,0.55)]'
-            >
-              <svg className='h-5 w-5 text-indigo-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M4 6h16M4 12h16M4 18h16' />
-              </svg>
-              Menu
-            </button>
-          </div>
-
-          <div className={`fixed left-0 top-12 bottom-0 z-50 w-[290px] max-w-[85vw] transform overflow-y-auto bg-white p-3 shadow-[0_30px_60px_-25px_rgba(15,23,42,0.7)] transition-transform duration-300 lg:hidden ${showMobileSidebar ? 'translate-x-0' : '-translate-x-full'}`}>
-            <div className='mb-3 flex items-center justify-between px-1'>
-              <p className='text-sm font-bold text-slate-800'>Quick Actions</p>
-              <button
-                type='button'
-                onClick={() => setShowMobileSidebar(false)}
-                className='rounded-xl p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-800'
-              >
-                <svg className='h-5 w-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
-                </svg>
-              </button>
-            </div>
-
-            <Sidebar
-              onAddVehicle={openAddVehicleModal}
-              onAddFitness={openAddFitnessModal}
-              onAddTax={openAddTaxModal}
-              onAddPuc={openAddPucModal}
-              onAddGps={openAddGpsModal}
-              onAddInsurance={openAddInsuranceModal}
-            />
-          </div>
-
-          <div className='grid grid-cols-1 gap-6 lg:grid-cols-[300px_minmax(0,1fr)]'>
-            <div className='hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_22px_50px_-32px_rgba(15,23,42,0.35)] lg:block'>
-              <Sidebar
-                onAddVehicle={openAddVehicleModal}
-                onAddFitness={openAddFitnessModal}
-                onAddTax={openAddTaxModal}
-                onAddPuc={openAddPucModal}
-                onAddGps={openAddGpsModal}
-                onAddInsurance={openAddInsuranceModal}
-              />
-            </div>
+          <div className='max-w-5xl mx-auto'>
 
             <div className='rounded-[32px] border border-slate-200 bg-white p-4 shadow-[0_28px_60px_-34px_rgba(15,23,42,0.25)] md:p-5 lg:p-6'>
               <div className='mb-6 grid grid-cols-2 gap-4'>
                 <button
                   type='button'
-                  onClick={() => navigate('/vehicle')}
+                  onClick={() => navigate('/rto-documents')}
                   className='flex flex-col items-center justify-center gap-2 rounded-2xl border-2 border-indigo-100 bg-indigo-50/50 p-4 transition-all hover:border-indigo-300 hover:bg-indigo-100/50 hover:shadow-lg'
                 >
                   <div className='flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-lg shadow-indigo-200'>

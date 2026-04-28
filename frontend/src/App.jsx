@@ -16,10 +16,11 @@ import Fitness from './pages/Fitness/Fitness'
 import Tax from './pages/Tax/Tax'
 import Puc from './pages/Puc/Puc'
 import Gps from './pages/Gps/Gps'
+import RTODocuments from './pages/RTODocuments'
 
 function AppContent() {
   const location = useLocation()
-  const showNavbar = location.pathname !== '/login'
+  const showNavbar = location.pathname !== '/login' && location.pathname !== '/'
 
   return (
     <>
@@ -38,6 +39,7 @@ function AppContent() {
           <Route path='/tax' element={<ProtectedRoute><Tax /></ProtectedRoute>} />
           <Route path='/puc' element={<ProtectedRoute><Puc /></ProtectedRoute>} />
           <Route path='/gps' element={<ProtectedRoute><Gps /></ProtectedRoute>} />
+          <Route path='/rto-documents' element={<ProtectedRoute><RTODocuments /></ProtectedRoute>} />
         </Routes>
       </div>
     </>
@@ -57,5 +59,3 @@ function App() {
 }
 
 export default App
-
-
