@@ -139,10 +139,6 @@ return (
               </div>
               <div className='mb-6'>
                 <h2 className='text-lg font-black text-slate-900'>Expiring Soon</h2>
-                <div className='mt-1.5 flex items-center gap-2'>
-                  <span className='flex h-2 w-2 rounded-full bg-rose-500 animate-pulse'></span>
-                  <p className='text-[9px] font-bold uppercase tracking-[0.2em] text-rose-600'>Critical Reminders (15 Days)</p>
-                </div>
               </div>
 
               <div className='space-y-3'>
@@ -153,8 +149,6 @@ return (
                     key={doc.id}
                     className='group relative overflow-hidden rounded-xl border-2 border-slate-50 bg-white p-3 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.1)] transition-all hover:border-slate-200 hover:shadow-[0_20px_50px_-20px_rgba(0,0,0,0.15)]'
                   >
-                    <div className={`absolute left-0 top-0 bottom-0 w-1 bg-${doc.color}-500`} />
-                    
                     <div className='flex flex-col gap-2.5'>
                       <div className='flex items-center justify-between'>
                         <div className='flex items-center gap-3'>
