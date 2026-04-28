@@ -27,6 +27,7 @@ const Home = () => {
   const [showAddInsuranceModal, setShowAddInsuranceModal] = useState(false)
   const [showImportModal, setShowImportModal] = useState(false)
   const [showMobileSidebar, setShowMobileSidebar] = useState(false)
+  const [expiryFilter, setExpiryFilter] = useState(15)
   
   const demoExpiringDocs = [
     { id: 1, type: 'Insurance', vehicleNumber: 'MH01AB1234', validFrom: '01-05-2023', validTo: '30-04-2024', daysLeft: 2, color: 'blue' },
@@ -137,13 +138,28 @@ return (
                   <span className='text-sm font-bold text-purple-900'>Upload Documents</span>
                 </button>
               </div>
-              <div className='mb-6'>
+              <div className='mb-6 flex items-center justify-between'>
                 <h2 className='text-lg font-black text-slate-900'>Expiring Soon</h2>
+                <div className='flex items-center gap-1.5 rounded-xl bg-slate-100 p-1'>
+                  {[15, 30, 60].map((days) => (
+                    <button
+                      key={days}
+                      onClick={() => setExpiryFilter(days)}
+                      className={`rounded-lg px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-all ${
+                        expiryFilter === days
+                          ? 'bg-white text-indigo-600 shadow-sm'
+                          : 'text-slate-500 hover:text-slate-700'
+                      }`}
+                    >
+                      {days}<span className='lowercase'>d</span>
+                    </button>
+                  ))}
+                </div>
               </div>
 
               <div className='space-y-3'>
-                {demoExpiringDocs
-                  .filter(doc => doc.vehicleNumber.includes(searchQuery.toUpperCase()) || doc.type.toUpperCase().includes(searchQuery.toUpperCase()))
+                 {demoExpiringDocs
+                  .filter(doc => (doc.vehicleNumber.includes(searchQuery.toUpperCase()) || doc.type.toUpperCase().includes(searchQuery.toUpperCase())) && doc.daysLeft <= expiryFilter)
                   .map((doc) => (
                   <div
                     key={doc.id}
