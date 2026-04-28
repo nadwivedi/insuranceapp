@@ -17,10 +17,12 @@ import Tax from './pages/Tax/Tax'
 import Puc from './pages/Puc/Puc'
 import Gps from './pages/Gps/Gps'
 import RTODocuments from './pages/RTODocuments'
+import BottomNavigation from './components/BottomNavigation'
 
 function AppContent() {
   const location = useLocation()
   const showNavbar = location.pathname !== '/login' && location.pathname !== '/'
+  const showBottomNav = location.pathname !== '/login'
 
   return (
     <>
@@ -42,6 +44,7 @@ function AppContent() {
           <Route path='/rto-documents' element={<ProtectedRoute><RTODocuments /></ProtectedRoute>} />
         </Routes>
       </div>
+      {showBottomNav && <BottomNavigation />}
     </>
   )
 }
