@@ -27,6 +27,14 @@ const Home = () => {
   const [showAddInsuranceModal, setShowAddInsuranceModal] = useState(false)
   const [showImportModal, setShowImportModal] = useState(false)
   const [showMobileSidebar, setShowMobileSidebar] = useState(false)
+  
+  const demoExpiringDocs = [
+    { id: 1, type: 'Insurance', vehicleNumber: 'MH01AB1234', validFrom: '01-05-2023', validTo: '30-04-2024', daysLeft: 2, color: 'blue' },
+    { id: 2, type: 'Tax', vehicleNumber: 'DL04CD5678', validFrom: '15-05-2023', validTo: '14-05-2024', daysLeft: 10, color: 'emerald' },
+    { id: 3, type: 'PUC', vehicleNumber: 'KA03EF9012', validFrom: '20-10-2023', validTo: '19-04-2024', daysLeft: 5, color: 'amber' },
+    { id: 4, type: 'Fitness', vehicleNumber: 'TS07GH3456', validFrom: '05-05-2023', validTo: '04-05-2024', daysLeft: 12, color: 'rose' },
+    { id: 5, type: 'GPS', vehicleNumber: 'HR26IJ7890', validFrom: '12-05-2023', validTo: '11-05-2024', daysLeft: 7, color: 'indigo' },
+  ]
 
   useEffect(() => {
     fetchVehicles()
@@ -184,83 +192,64 @@ return (
                 <SearchBar
                   value={searchQuery}
                   onChange={setSearchQuery}
-                  placeholder='Search by vehicle number...'
+                  placeholder='Search expiring documents...'
                   toUpperCase={true}
                 />
                 <div className='hidden sm:flex items-center gap-2 text-sm text-slate-500'>
-                  <span className='font-semibold'>{filteredVehicles.length}</span> vehicle{filteredVehicles.length === 1 ? '' : 's'}
+                  <span className='font-bold text-rose-600'>Expiring Soon (15d)</span>
                 </div>
               </div>
 
-              {loading ? (
-                <div className='grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3'>
-                  {Array.from({ length: 6 }).map((_, index) => (
-                    <div key={index} className='h-56 animate-pulse rounded-3xl border border-slate-200 bg-slate-100' />
-                  ))}
-                </div>
-              ) : error ? (
-                <div className='rounded-3xl border border-red-200 bg-red-50 px-5 py-6 text-center text-sm font-bold text-red-600'>
-                  {error}
-                </div>
-              ) : filteredVehicles.length === 0 ? (
-                <div className='rounded-3xl border border-slate-200 bg-slate-50 px-5 py-12 text-center'>
-                  <svg className='mx-auto h-12 w-12 text-slate-300 mb-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={1.5} d='M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z' />
-                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={1.5} d='M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10m1 0l-2-2m2 2l2-2m-2 2v6m0 0v6m-5-6h5m5 0V6' />
-                  </svg>
-                  <p className='text-base font-bold text-slate-700'>No vehicles found</p>
-                  <p className='text-sm text-slate-500 mt-1'>Add a vehicle using the sidebar to get started</p>
-                </div>
-              ) : (
-                <div className='grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3'>
-                  {filteredVehicles.map((vehicle) => {
-                    const vehicleNumber = (vehicle.registrationNumber || vehicle.vehicleNumber || 'N/A').toUpperCase()
-
-                    return (
-                      <article
-                        key={vehicle._id}
-                        onClick={() => navigate(`/vehicle/${vehicle._id}/detail`)}
-                        onKeyDown={(event) => {
-                          if (event.key === 'Enter' || event.key === ' ') {
-                            event.preventDefault()
-                            navigate(`/vehicle/${vehicle._id}/detail`)
-                          }
-                        }}
-                        role='button'
-                        tabIndex={0}
-                        className='cursor-pointer overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_18px_45px_-30px_rgba(15,23,42,0.6)]'
-                      >
-                        <div className='p-5'>
-                          <div className='mx-auto max-w-[280px] rounded-[26px] border-[5px] border-slate-900 bg-gradient-to-b from-amber-200 to-yellow-300 px-5 py-5 shadow-[inset_0_2px_10px_rgba(255,255,255,0.45),0_8px_30px_-8px_rgba(0,0,0,0.25)]'>
-                            <p className='text-center text-[10px] font-extrabold uppercase tracking-[0.36em] text-slate-600'>
-                              Registration No
-                            </p>
-                            <div className='mt-3 text-center text-xl font-black tracking-[0.18em] text-slate-950 md:text-2xl'>
-                              {vehicleNumber}
-                            </div>
-                          </div>
-
-                          <div className='mt-3 grid grid-cols-2 gap-3'>
-                            <div className='rounded-2xl border border-blue-200 bg-blue-50/70 px-3 py-2.5'>
-                              <p className='text-[9px] font-bold uppercase tracking-[0.22em] text-blue-600'>Chassis</p>
-                              <p className='mt-1.5 truncate font-mono text-xs font-semibold text-blue-950' title={vehicle.chassisNumber || 'N/A'}>
-                                {vehicle.chassisNumber || 'N/A'}
-                              </p>
-                            </div>
-
-                            <div className='rounded-2xl border border-emerald-200 bg-emerald-50/70 px-3 py-2.5'>
-                              <p className='text-[9px] font-bold uppercase tracking-[0.22em] text-emerald-600'>Engine</p>
-                              <p className='mt-1.5 truncate font-mono text-xs font-semibold text-emerald-950' title={vehicle.engineNumber || 'N/A'}>
-                                {vehicle.engineNumber || 'N/A'}
-                              </p>
-                            </div>
-                          </div>
+              <div className='space-y-3'>
+                {demoExpiringDocs
+                  .filter(doc => doc.vehicleNumber.includes(searchQuery.toUpperCase()) || doc.type.toUpperCase().includes(searchQuery.toUpperCase()))
+                  .map((doc) => (
+                  <div
+                    key={doc.id}
+                    className='group relative overflow-hidden rounded-xl border-2 border-slate-50 bg-white p-3 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.1)] transition-all hover:border-slate-200 hover:shadow-[0_20px_50px_-20px_rgba(0,0,0,0.15)]'
+                  >
+                    <div className={`absolute left-0 top-0 bottom-0 w-1 bg-${doc.color}-500`} />
+                    
+                    <div className='flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between'>
+                      <div className='flex items-center gap-3'>
+                        <div className={`flex h-10 w-10 items-center justify-center rounded-lg bg-${doc.color}-50 text-${doc.color}-600 shadow-sm border border-${doc.color}-100`}>
+                          {doc.type === 'Insurance' && <svg className='h-6 w-6' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z' /></svg>}
+                          {doc.type === 'Tax' && <svg className='h-6 w-6' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' /></svg>}
+                          {doc.type === 'PUC' && <svg className='h-6 w-6' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M13 10V3L4 14h7v7l9-11h-7z' /></svg>}
+                          {doc.type === 'Fitness' && <svg className='h-6 w-6' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2' /></svg>}
+                          {doc.type === 'GPS' && <svg className='h-6 w-6' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z' /><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 11a3 3 0 11-6 0 3 3 0 016 0z' /></svg>}
                         </div>
-                      </article>
-                    )
-                  })}
-                </div>
-              )}
+                        <div>
+                          <h3 className='text-sm font-bold text-slate-900'>{doc.type}</h3>
+                          <p className='text-xs font-black tracking-wider text-slate-500'>{doc.vehicleNumber}</p>
+                        </div>
+                      </div>
+
+                      <div className='grid grid-cols-2 gap-3 sm:flex sm:gap-6'>
+                        <div>
+                          <p className='text-[9px] font-bold uppercase tracking-tight text-slate-400'>From</p>
+                          <p className='text-[11px] font-semibold text-slate-700'>{doc.validFrom}</p>
+                        </div>
+                        <div>
+                          <p className='text-[9px] font-bold uppercase tracking-tight text-slate-400'>To</p>
+                          <p className='text-[11px] font-bold text-slate-900'>{doc.validTo}</p>
+                        </div>
+                      </div>
+
+                      <div className='flex items-center justify-between sm:justify-end sm:gap-3'>
+                        <div className={`rounded-full bg-${doc.color}-50 px-2.5 py-0.5 text-[10px] font-bold text-${doc.color}-700 border border-${doc.color}-100`}>
+                          {doc.daysLeft}d left
+                        </div>
+                        <button className='rounded-xl bg-slate-50 p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-900'>
+                          <svg className='h-5 w-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
