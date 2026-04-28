@@ -1,309 +1,145 @@
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
-import Sidebar from '../components/Sidebar'
+import { useState } from 'react'
 import SearchBar from '../components/SearchBar'
 import AddVehicleModal from './VehicleRegistration/components/AddVehicleModal'
-import AddFitnessModal from './Fitness/components/AddFitnessModal'
-import AddTaxModal from './Tax/components/AddTaxModal'
-import AddPucModal from './Puc/components/AddPucModal'
-import AddGpsModal from './Gps/components/AddGpsModal'
-import AddInsuranceModal from './Insurance/components/AddInsuranceModal'
-
-const API_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'
 
 const RTODocuments = () => {
-  const navigate = useNavigate()
-  const [vehicles, setVehicles] = useState([])
   const [searchQuery, setSearchQuery] = useState('')
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
   const [showAddVehicleModal, setShowAddVehicleModal] = useState(false)
-  const [showAddFitnessModal, setShowAddFitnessModal] = useState(false)
-  const [showAddTaxModal, setShowAddTaxModal] = useState(false)
-  const [showAddPucModal, setShowAddPucModal] = useState(false)
-  const [showAddGpsModal, setShowAddGpsModal] = useState(false)
-  const [showAddInsuranceModal, setShowAddInsuranceModal] = useState(false)
-  const [showMobileSidebar, setShowMobileSidebar] = useState(false)
 
-  useEffect(() => {
-    fetchVehicles()
-  }, [])
+  // Demo data for all document types
+  const demoDocuments = [
+    { id: 1, type: 'Tax', vehicleNumber: 'MH01AB1234', validFrom: '2023-01-01', validTo: '2023-12-31', status: 'Active' },
+    { id: 2, type: 'PUC', vehicleNumber: 'MH01AB1234', validFrom: '2024-01-15', validTo: '2024-07-15', status: 'Active' },
+    { id: 3, type: 'GPS', vehicleNumber: 'MH01AB1234', validFrom: '2023-06-01', validTo: '2024-06-01', status: 'Active' },
+    { id: 4, type: 'Fitness', vehicleNumber: 'DL01XY9876', validFrom: '2022-10-10', validTo: '2024-10-10', status: 'Active' },
+    { id: 5, type: 'Permit', vehicleNumber: 'DL01XY9876', validFrom: '2023-05-05', validTo: '2025-05-05', status: 'Active' },
+    { id: 6, type: 'Tax', vehicleNumber: 'KA05CD5678', validFrom: '2023-03-01', validTo: '2024-03-01', status: 'Expired' },
+    { id: 7, type: 'PUC', vehicleNumber: 'KA05CD5678', validFrom: '2023-09-01', validTo: '2024-03-01', status: 'Expiring Soon' },
+    { id: 8, type: 'Insurance', vehicleNumber: 'MH12EF4321', validFrom: '2023-11-11', validTo: '2024-11-10', status: 'Active' },
+  ]
 
-  const fetchVehicles = async () => {
-    try {
-      setLoading(true)
-      setError('')
+  const filteredDocuments = demoDocuments.filter(doc => 
+    doc.vehicleNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    doc.type.toLowerCase().includes(searchQuery.toLowerCase())
+  )
 
-      const response = await axios.get(`${API_URL}/api/vehicle`, {
-        params: {
-          page: 1,
-          limit: 1000,
-        },
-        withCredentials: true,
-      })
-
-      if (response.data?.success) {
-        setVehicles(response.data.data || [])
-      } else {
-        setVehicles([])
-        setError('Failed to load vehicles.')
-      }
-    } catch (err) {
-      console.error('Error fetching vehicles:', err)
-      setVehicles([])
-      setError('Failed to fetch registered vehicles.')
-    } finally {
-      setLoading(false)
+  const getStatusColor = (status) => {
+    switch(status) {
+      case 'Active': return 'bg-emerald-100 text-emerald-700'
+      case 'Expired': return 'bg-rose-100 text-rose-700'
+      case 'Expiring Soon': return 'bg-amber-100 text-amber-700'
+      default: return 'bg-slate-100 text-slate-700'
     }
   }
 
-  const filteredVehicles = vehicles.filter((vehicle) => {
-    const vehicleNumber = String(vehicle.registrationNumber || vehicle.vehicleNumber || '').toUpperCase()
-    return vehicleNumber.includes(searchQuery.trim().toUpperCase())
-  })
-
-  const openAddVehicleModal = () => {
-    setShowMobileSidebar(false)
-    setShowAddVehicleModal(true)
-  }
-
-  const openAddFitnessModal = () => {
-    setShowMobileSidebar(false)
-    setShowAddFitnessModal(true)
-  }
-
-  const openAddTaxModal = () => {
-    setShowMobileSidebar(false)
-    setShowAddTaxModal(true)
-  }
-
-  const openAddPucModal = () => {
-    setShowMobileSidebar(false)
-    setShowAddPucModal(true)
-  }
-
-  const openAddGpsModal = () => {
-    setShowMobileSidebar(false)
-    setShowAddGpsModal(true)
-  }
-
-  const openAddInsuranceModal = () => {
-    setShowMobileSidebar(false)
-    setShowAddInsuranceModal(true)
+  const getDocTypeIcon = (type) => {
+    switch(type) {
+      case 'Tax': return '💰'
+      case 'PUC': return '🌬️'
+      case 'GPS': return '📍'
+      case 'Fitness': return '🔧'
+      case 'Permit': return '📜'
+      case 'Insurance': return '🛡️'
+      default: return '📄'
+    }
   }
 
   return (
-    <div className='min-h-screen bg-[radial-gradient(circle_at_top,_#eff6ff,_#f8fafc_45%,_#ffffff_100%)]'>
-      <main className='pl-2 pr-4 pt-6 pb-10 lg:pl-3 lg:pr-8 lg:pt-8'>
-        <section className='w-full'>
-          {showMobileSidebar && (
-            <div className='fixed inset-0 z-40 bg-slate-950/45 lg:hidden' onClick={() => setShowMobileSidebar(false)} />
-          )}
-
-          <div className='mb-4 flex items-center justify-between lg:hidden'>
-            <button
-              type='button'
-              onClick={() => setShowMobileSidebar(true)}
-              className='inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-800 shadow-[0_16px_35px_-25px_rgba(15,23,42,0.55)]'
-            >
-              <svg className='h-5 w-5 text-indigo-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M4 6h16M4 12h16M4 18h16' />
-              </svg>
-              Menu
-            </button>
-            <h1 className='text-lg font-black text-slate-900'>RTO Documents</h1>
+    <div className='min-h-screen bg-slate-100 px-4 pb-32 pt-4 md:px-6 lg:px-8'>
+      <div className='mx-auto max-w-5xl'>
+        {/* Header Section */}
+        <div className='mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
+          <div>
+            <h1 className='text-3xl font-black text-slate-900'>RTO Documents</h1>
+            <p className='text-sm font-bold text-slate-500 uppercase tracking-widest'>Master Document Repository</p>
           </div>
+          <button
+            onClick={() => setShowAddVehicleModal(true)}
+            className='flex items-center justify-center gap-2 rounded-2xl bg-indigo-600 px-6 py-3.5 text-sm font-black uppercase tracking-widest text-white shadow-xl shadow-indigo-100 transition-all hover:bg-indigo-700 active:scale-[0.98]'
+          >
+            <svg className='h-5 w-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={3} d='M12 4v16m8-8H4' />
+            </svg>
+            Upload RC
+          </button>
+        </div>
 
-          <div className={`fixed left-0 top-12 bottom-0 z-50 w-[290px] max-w-[85vw] transform overflow-y-auto bg-white p-3 shadow-[0_30px_60px_-25px_rgba(15,23,42,0.7)] transition-transform duration-300 lg:hidden ${showMobileSidebar ? 'translate-x-0' : '-translate-x-full'}`}>
-            <div className='mb-3 flex items-center justify-between px-1'>
-              <p className='text-sm font-bold text-slate-800'>Quick Actions</p>
-              <button
-                type='button'
-                onClick={() => setShowMobileSidebar(false)}
-                className='rounded-xl p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-800'
-              >
-                <svg className='h-5 w-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
-                </svg>
-              </button>
+        {/* Search Bar */}
+        <div className='mb-8'>
+          <div className='relative'>
+            <div className='absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none'>
+              <svg className='w-5 h-5 text-slate-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2.5} d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' />
+              </svg>
             </div>
-
-            <Sidebar
-              onAddVehicle={openAddVehicleModal}
-              onAddFitness={openAddFitnessModal}
-              onAddTax={openAddTaxModal}
-              onAddPuc={openAddPucModal}
-              onAddGps={openAddGpsModal}
-              onAddInsurance={openAddInsuranceModal}
+            <input
+              type='text'
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder='Search by Vehicle No or Doc Type...'
+              className='w-full rounded-3xl border-2 border-slate-200 bg-white py-4 pl-12 pr-6 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 transition-all uppercase'
             />
           </div>
+        </div>
 
-          <div className='grid grid-cols-1 gap-6 lg:grid-cols-[300px_minmax(0,1fr)]'>
-            <div className='hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_22px_50px_-32px_rgba(15,23,42,0.35)] lg:block'>
-              <Sidebar
-                onAddVehicle={openAddVehicleModal}
-                onAddFitness={openAddFitnessModal}
-                onAddTax={openAddTaxModal}
-                onAddPuc={openAddPucModal}
-                onAddGps={openAddGpsModal}
-                onAddInsurance={openAddInsuranceModal}
-              />
-            </div>
-
-            <div className='rounded-[32px] border border-slate-200 bg-white p-4 shadow-[0_28px_60px_-34px_rgba(15,23,42,0.25)] md:p-5 lg:p-6'>
-              <div className='mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
-                <div>
-                  <h1 className='text-2xl font-black text-slate-900'>RTO Documents</h1>
-                  <p className='text-sm font-medium text-slate-500'>Manage and track all vehicle documents</p>
+        {/* Document Cards List */}
+        <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
+          {filteredDocuments.map((doc) => (
+            <div
+              key={doc.id}
+              className='group relative overflow-hidden rounded-[32px] border-2 border-white bg-white p-5 shadow-[0_15px_40px_-20px_rgba(15,23,42,0.1)] transition-all hover:border-indigo-100 hover:shadow-[0_25px_60px_-25px_rgba(15,23,42,0.2)]'
+            >
+              <div className='flex items-center justify-between mb-4'>
+                <div className='flex items-center gap-3'>
+                  <div className='flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-50 text-2xl shadow-inner group-hover:scale-110 transition-transform'>
+                    {getDocTypeIcon(doc.type)}
+                  </div>
+                  <div>
+                    <h3 className='text-lg font-black text-slate-900'>{doc.type}</h3>
+                    <p className='text-[10px] font-bold uppercase tracking-wider text-slate-400'>{doc.vehicleNumber}</p>
+                  </div>
                 </div>
-                <div className='flex items-center gap-2 text-sm text-slate-500'>
-                  <span className='font-semibold'>{filteredVehicles.length}</span> vehicle{filteredVehicles.length === 1 ? '' : 's'}
+                <span className={`rounded-full px-2.5 py-1 text-[10px] font-black uppercase tracking-wider ${getStatusColor(doc.status)}`}>
+                  {doc.status}
+                </span>
+              </div>
+
+              <div className='grid grid-cols-2 gap-3 border-t border-slate-50 pt-4'>
+                <div className='rounded-2xl bg-slate-50 p-3 border border-slate-100'>
+                  <p className='text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-1'>Valid From</p>
+                  <p className='text-xs font-black text-slate-800'>{doc.validFrom}</p>
+                </div>
+                <div className='rounded-2xl bg-slate-50 p-3 border border-slate-100'>
+                  <p className='text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-1'>Valid To</p>
+                  <p className='text-xs font-black text-slate-800'>{doc.validTo}</p>
                 </div>
               </div>
 
-              <div className='mb-6'>
-                <SearchBar
-                  value={searchQuery}
-                  onChange={setSearchQuery}
-                  placeholder='Search by vehicle number...'
-                  toUpperCase={true}
-                />
+              <div className='absolute -bottom-1 -right-1 h-12 w-12 rounded-tl-[32px] bg-slate-50/50 flex items-end justify-end p-2 opacity-0 group-hover:opacity-100 transition-opacity'>
+                <svg className='h-4 w-4 text-indigo-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={3} d='M9 5l7 7-7 7' />
+                </svg>
               </div>
-
-              {loading ? (
-                <div className='grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3'>
-                  {Array.from({ length: 6 }).map((_, index) => (
-                    <div key={index} className='h-56 animate-pulse rounded-3xl border border-slate-200 bg-slate-100' />
-                  ))}
-                </div>
-              ) : error ? (
-                <div className='rounded-3xl border border-red-200 bg-red-50 px-5 py-6 text-center text-sm font-bold text-red-600'>
-                  {error}
-                </div>
-              ) : filteredVehicles.length === 0 ? (
-                <div className='rounded-3xl border border-slate-200 bg-slate-50 px-5 py-12 text-center'>
-                  <svg className='mx-auto h-12 w-12 text-slate-300 mb-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={1.5} d='M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z' />
-                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={1.5} d='M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10m1 0l-2-2m2 2l2-2m-2 2v6m0 0v6m-5-6h5m5 0V6' />
-                  </svg>
-                  <p className='text-base font-bold text-slate-700'>No vehicles found</p>
-                  <p className='text-sm text-slate-500 mt-1'>Add a vehicle using the sidebar to get started</p>
-                </div>
-              ) : (
-                <div className='grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3'>
-                  {filteredVehicles.map((vehicle) => {
-                    const vehicleNumber = (vehicle.registrationNumber || vehicle.vehicleNumber || 'N/A').toUpperCase()
-
-                    return (
-                      <article
-                        key={vehicle._id}
-                        onClick={() => navigate(`/vehicle/${vehicle._id}/detail`)}
-                        onKeyDown={(event) => {
-                          if (event.key === 'Enter' || event.key === ' ') {
-                            event.preventDefault()
-                            navigate(`/vehicle/${vehicle._id}/detail`)
-                          }
-                        }}
-                        role='button'
-                        tabIndex={0}
-                        className='cursor-pointer overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_18px_45px_-30px_rgba(15,23,42,0.6)]'
-                      >
-                        <div className='p-5'>
-                          <div className='mx-auto max-w-[280px] rounded-[26px] border-[5px] border-slate-900 bg-gradient-to-b from-amber-200 to-yellow-300 px-5 py-5 shadow-[inset_0_2px_10px_rgba(255,255,255,0.45),0_8px_30px_-8px_rgba(0,0,0,0.25)]'>
-                            <p className='text-center text-[10px] font-extrabold uppercase tracking-[0.36em] text-slate-600'>
-                              Registration No
-                            </p>
-                            <div className='mt-3 text-center text-xl font-black tracking-[0.18em] text-slate-950 md:text-2xl'>
-                              {vehicleNumber}
-                            </div>
-                          </div>
-
-                          <div className='mt-3 grid grid-cols-2 gap-3'>
-                            <div className='rounded-2xl border border-blue-200 bg-blue-50/70 px-3 py-2.5'>
-                              <p className='text-[9px] font-bold uppercase tracking-[0.22em] text-blue-600'>Chassis</p>
-                              <p className='mt-1.5 truncate font-mono text-xs font-semibold text-blue-950' title={vehicle.chassisNumber || 'N/A'}>
-                                {vehicle.chassisNumber || 'N/A'}
-                              </p>
-                            </div>
-
-                            <div className='rounded-2xl border border-emerald-200 bg-emerald-50/70 px-3 py-2.5'>
-                              <p className='text-[9px] font-bold uppercase tracking-[0.22em] text-emerald-600'>Engine</p>
-                              <p className='mt-1.5 truncate font-mono text-xs font-semibold text-emerald-950' title={vehicle.engineNumber || 'N/A'}>
-                                {vehicle.engineNumber || 'N/A'}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </article>
-                    )
-                  })}
-                </div>
-              )}
             </div>
+          ))}
+        </div>
+
+        {filteredDocuments.length === 0 && (
+          <div className='mt-12 text-center'>
+            <div className='mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-slate-50 text-4xl shadow-inner grayscale opacity-50'>
+              🔍
+            </div>
+            <h3 className='text-xl font-black text-slate-900'>No Documents Found</h3>
+            <p className='text-sm font-semibold text-slate-400'>Try searching with a different vehicle number or type.</p>
           </div>
-        </section>
-      </main>
+        )}
+      </div>
 
       {showAddVehicleModal && (
         <AddVehicleModal
           isOpen={showAddVehicleModal}
           onClose={() => setShowAddVehicleModal(false)}
-          onSuccess={() => {
-            setShowAddVehicleModal(false)
-            fetchVehicles()
-          }}
-          editData={null}
-        />
-      )}
-
-      {showAddFitnessModal && (
-        <AddFitnessModal
-          isOpen={showAddFitnessModal}
-          onClose={() => setShowAddFitnessModal(false)}
-          onSubmit={() => {
-            setShowAddFitnessModal(false)
-          }}
-        />
-      )}
-
-      {showAddTaxModal && (
-        <AddTaxModal
-          isOpen={showAddTaxModal}
-          onClose={() => setShowAddTaxModal(false)}
-          onSubmit={() => {
-            setShowAddTaxModal(false)
-          }}
-        />
-      )}
-
-      {showAddPucModal && (
-        <AddPucModal
-          isOpen={showAddPucModal}
-          onClose={() => setShowAddPucModal(false)}
-          onSubmit={() => {
-            setShowAddPucModal(false)
-          }}
-        />
-      )}
-
-      {showAddGpsModal && (
-        <AddGpsModal
-          isOpen={showAddGpsModal}
-          onClose={() => setShowAddGpsModal(false)}
-          onSubmit={() => {
-            setShowAddGpsModal(false)
-          }}
-        />
-      )}
-
-      {showAddInsuranceModal && (
-        <AddInsuranceModal
-          isOpen={showAddInsuranceModal}
-          onClose={() => setShowAddInsuranceModal(false)}
-          onSubmit={() => {
-            setShowAddInsuranceModal(false)
-          }}
+          onSuccess={() => setShowAddVehicleModal(false)}
         />
       )}
     </div>
