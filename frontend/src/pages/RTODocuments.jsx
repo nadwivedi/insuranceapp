@@ -4,6 +4,8 @@ import AddVehicleModal from './VehicleRegistration/components/AddVehicleModal'
 
 const RTODocuments = () => {
   const [searchQuery, setSearchQuery] = useState('')
+  const [statusFilter, setStatusFilter] = useState('All')
+  const [typeFilter, setTypeFilter] = useState('All')
   const [showAddVehicleModal, setShowAddVehicleModal] = useState(false)
 
   // Demo data for all document types
@@ -21,10 +23,13 @@ const RTODocuments = () => {
   const statusPriority = { 'Active': 1, 'Expiring Soon': 2, 'Expired': 3 }
 
   const filteredDocuments = demoDocuments
-    .filter(doc => 
-      doc.vehicleNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      doc.type.toLowerCase().includes(searchQuery.toLowerCase())
-    )
+    .filter(doc => {
+      const matchesSearch = doc.vehicleNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          doc.type.toLowerCase().includes(searchQuery.toLowerCase())
+      const matchesStatus = statusFilter === 'All' || doc.status === statusFilter
+      const matchesType = typeFilter === 'All' || doc.type === typeFilter
+      return matchesSearch && matchesStatus && matchesType
+    })
     .sort((a, b) => statusPriority[a.status] - statusPriority[b.status])
 
   const getStatusColor = (status) => {
@@ -62,11 +67,11 @@ const RTODocuments = () => {
           <p className='text-[10px] font-bold text-slate-500 uppercase tracking-widest'>Master Document Repository</p>
         </div>
 
-        {/* Search Bar */}
-        <div className='mb-8'>
-          <div className='relative'>
+        {/* Search & Filters Bar */}
+        <div className='mb-6 flex flex-col gap-3 md:flex-row md:items-center'>
+          <div className='relative flex-1'>
             <div className='absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none'>
-              <svg className='w-5 h-5 text-slate-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+              <svg className='w-4 h-4 text-slate-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                 <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2.5} d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' />
               </svg>
             </div>
@@ -74,9 +79,36 @@ const RTODocuments = () => {
               type='text'
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder='Search by Vehicle No or Doc Type...'
-              className='w-full rounded-3xl border-2 border-slate-200 bg-white py-3 pl-12 pr-6 text-sm font-black text-slate-900 placeholder:text-slate-400 placeholder:font-semibold focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 transition-all uppercase'
+              placeholder='Search Vehicle or Doc...'
+              className='w-full rounded-2xl border-2 border-slate-200 bg-white py-2.5 pl-10 pr-4 text-xs font-black text-slate-900 placeholder:text-[10px] placeholder:text-slate-400 placeholder:font-semibold focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 transition-all uppercase'
             />
+          </div>
+
+          <div className='flex gap-2 shrink-0'>
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className='rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-[10px] font-black text-slate-700 focus:border-indigo-500 focus:outline-none'
+            >
+              <option value='All'>All Status</option>
+              <option value='Active'>Active</option>
+              <option value='Expiring Soon'>Expiring</option>
+              <option value='Expired'>Expired</option>
+            </select>
+
+            <select
+              value={typeFilter}
+              onChange={(e) => setTypeFilter(e.target.value)}
+              className='rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-[10px] font-black text-slate-700 focus:border-indigo-500 focus:outline-none'
+            >
+              <option value='All'>All Types</option>
+              <option value='Tax'>Tax</option>
+              <option value='PUC'>PUC</option>
+              <option value='GPS'>GPS</option>
+              <option value='Fitness'>Fitness</option>
+              <option value='Permit'>Permit</option>
+              <option value='Insurance'>Insurance</option>
+            </select>
           </div>
         </div>
 
