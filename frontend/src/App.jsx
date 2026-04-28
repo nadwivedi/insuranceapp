@@ -19,10 +19,11 @@ import Gps from './pages/Gps/Gps'
 import RTODocuments from './pages/RTODocuments'
 import BottomNavigation from './components/BottomNavigation'
 import PremiumCalculator from './pages/PremiumCalculator'
+import DocumentDetail from './pages/DocumentDetail'
 
 function AppContent() {
   const location = useLocation()
-  const showNavbar = location.pathname !== '/login' && location.pathname !== '/' && location.pathname !== '/premium-calculator' && location.pathname !== '/setting' && location.pathname !== '/rto-documents'
+  const showNavbar = location.pathname !== '/login' && location.pathname !== '/' && location.pathname !== '/premium-calculator' && location.pathname !== '/setting' && location.pathname !== '/rto-documents' && !location.pathname.startsWith('/document/')
   const showBottomNav = location.pathname !== '/login'
 
   return (
@@ -44,6 +45,7 @@ function AppContent() {
           <Route path='/gps' element={<Gps />} />
           <Route path='/rto-documents' element={<RTODocuments />} />
           <Route path='/premium-calculator' element={<PremiumCalculator />} />
+          <Route path='/document/:id' element={<DocumentDetail />} />
         </Routes>
       </div>
       {showBottomNav && <BottomNavigation />}
