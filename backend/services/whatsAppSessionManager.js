@@ -34,17 +34,19 @@ class WhatsAppSessionManager {
   }
 
   async ensureDefaultSession() {
-    let session = await WhatsAppSession.findOne({ sessionKey: this.defaultSessionKey })
-    if (!session) {
-      session = await WhatsAppSession.create({
-        sessionKey: this.defaultSessionKey,
-        displayName: 'Primary Session',
-        isActive: true,
-      })
-    } else if (!session.displayName) {
-      session.displayName = 'Primary Session'
-      await session.save()
-    }
+    const session = await WhatsAppSession.findOneAndUpdate(
+      { sessionKey: this.defaultSessionKey },
+      {
+        $setOnInsert: {
+          sessionKey: this.defaultSessionKey,
+          isActive: true,
+        },
+        $set: {
+          displayName: 'Primary Session',
+        },
+      },
+      { upsert: true, returnDocument: 'after', setDefaultsOnInsert: true }
+    )
 
     return session
   }
@@ -57,17 +59,19 @@ class WhatsAppSessionManager {
 
   async getSession(sessionKey = this.defaultSessionKey) {
     const normalizedKey = this.sanitizeSessionKey(sessionKey)
-    let session = await WhatsAppSession.findOne({ sessionKey: normalizedKey })
-    if (!session) {
-      session = await WhatsAppSession.create({
-        sessionKey: normalizedKey,
-        displayName: this.buildDefaultDisplayName(normalizedKey),
-        isActive: normalizedKey === this.defaultSessionKey,
-      })
-    } else if (!session.displayName) {
-      session.displayName = this.buildDefaultDisplayName(normalizedKey)
-      await session.save()
-    }
+    const session = await WhatsAppSession.findOneAndUpdate(
+      { sessionKey: normalizedKey },
+      {
+        $setOnInsert: {
+          sessionKey: normalizedKey,
+          isActive: normalizedKey === this.defaultSessionKey,
+        },
+        $set: {
+          displayName: this.buildDefaultDisplayName(normalizedKey),
+        },
+      },
+      { upsert: true, returnDocument: 'after', setDefaultsOnInsert: true }
+    )
 
     return session
   }

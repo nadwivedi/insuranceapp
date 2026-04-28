@@ -1,10 +1,14 @@
-require('dotenv').config()
+const path = require('path')
+require('dotenv').config({ path: path.join(__dirname, '../.env') })
 const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 const readline = require('readline')
 const Admin = require('../models/Admin')
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/transport'
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/insuranceapp'
+
+console.log(MONGODB_URI);
+
 
 const askQuestion = (rl, prompt) =>
   new Promise((resolve) => {
