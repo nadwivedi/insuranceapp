@@ -44,13 +44,13 @@ const BottomNavigation = () => {
               key={item.path}
               to={item.path}
               className={`flex flex-col items-center justify-center gap-1 transition-all duration-200 ${
-                isActive ? 'text-indigo-600 scale-110' : 'text-slate-400 hover:text-slate-600'
+                isActive ? 'text-indigo-600' : 'text-slate-400 hover:text-slate-600'
               }`}
             >
-              <div className={`${isActive ? 'rounded-xl bg-indigo-50 p-1' : ''}`}>
+              <div>
                 {item.icon}
               </div>
-              <span className={`text-[10px] font-bold uppercase tracking-tight ${isActive ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden'}`}>
+              <span className='text-[10px] font-bold uppercase tracking-tight'>
                 {item.label}
               </span>
             </Link>
