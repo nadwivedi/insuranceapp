@@ -117,12 +117,12 @@ return (
                   onClick={() => navigate('/rto-documents')}
                   className='flex flex-col items-center justify-center gap-2 rounded-2xl border-2 border-indigo-100 bg-indigo-50/50 p-4 transition-all hover:border-indigo-300 hover:bg-indigo-100/50 hover:shadow-lg'
                 >
-                  <div className='flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-lg shadow-indigo-200'>
-                    <svg className='h-6 w-6' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                  <div className='flex h-8 w-8 md:h-10 md:w-10 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-lg shadow-indigo-200'>
+                    <svg className='h-5 w-5 md:h-6 md:w-6' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                       <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' />
                     </svg>
                   </div>
-                  <span className='text-sm font-bold text-indigo-900'>RTO Documents</span>
+                  <span className='text-[10px] md:text-sm font-bold text-indigo-900'>RTO Documents</span>
                 </button>
 
                 <button
@@ -130,12 +130,12 @@ return (
                   onClick={() => setShowImportModal(true)}
                   className='flex flex-col items-center justify-center gap-2 rounded-2xl border-2 border-purple-100 bg-purple-50/50 p-4 transition-all hover:border-purple-300 hover:bg-purple-100/50 hover:shadow-lg'
                 >
-                  <div className='flex h-10 w-10 items-center justify-center rounded-xl bg-purple-600 text-white shadow-lg shadow-purple-200'>
-                    <svg className='h-6 w-6' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                  <div className='flex h-8 w-8 md:h-10 md:w-10 items-center justify-center rounded-xl bg-purple-600 text-white shadow-lg shadow-purple-200'>
+                    <svg className='h-5 w-5 md:h-6 md:w-6' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                       <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12' />
                     </svg>
                   </div>
-                  <span className='text-sm font-bold text-purple-900'>Upload Documents</span>
+                  <span className='text-[10px] md:text-sm font-bold text-purple-900'>Upload Documents</span>
                 </button>
               </div>
               <div className='mb-6 flex items-center justify-between'>

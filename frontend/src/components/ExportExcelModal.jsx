@@ -38,7 +38,7 @@ const ExportExcelModal = ({ isOpen, onClose }) => {
 
   const handleExport = async () => {
     if (selectedTypes.length === 0) {
-      toast.error('Please select at least one data type to export', {
+      toast.error('Please select at least one document type to export', {
         position: 'top-right',
         autoClose: 3000
       })
@@ -50,7 +50,7 @@ const ExportExcelModal = ({ isOpen, onClose }) => {
     let failCount = 0
 
     try {
-      toast.info(`Exporting ${selectedTypes.length} data type(s)...`, {
+      toast.info(`Exporting ${selectedTypes.length} document type(s)...`, {
         position: 'top-right',
         autoClose: 2000
       })
@@ -87,14 +87,14 @@ const ExportExcelModal = ({ isOpen, onClose }) => {
       }
 
       if (successCount > 0) {
-        toast.success(`✅ Successfully exported ${successCount} data type(s)`, {
+        toast.success(`✅ Successfully exported ${successCount} document type(s)`, {
           position: 'top-right',
           autoClose: 3000
         })
       }
 
       if (failCount > 0) {
-        toast.warning(`⚠️ Failed to export ${failCount} data type(s)`, {
+        toast.warning(`⚠️ Failed to export ${failCount} document type(s)`, {
           position: 'top-right',
           autoClose: 3000
         })
@@ -140,7 +140,7 @@ const ExportExcelModal = ({ isOpen, onClose }) => {
               </div>
               <div>
                 <h2 className='text-xl font-bold text-gray-800'>Export Data as Excel</h2>
-                <p className='text-xs text-gray-500'>Select data types to export</p>
+                <p className='text-xs text-gray-500'>Select document types to export</p>
               </div>
             </div>
             <button
@@ -168,7 +168,7 @@ const ExportExcelModal = ({ isOpen, onClose }) => {
                   <span className='text-2xl'>✓</span>
                   <div>
                     <span className='font-bold text-gray-800'>Select All</span>
-                    <p className='text-xs text-gray-500'>Export all data types</p>
+                    <p className='text-xs text-gray-500'>Export all document types</p>
                   </div>
                 </div>
                 <span className='text-sm font-semibold text-green-600'>
@@ -177,10 +177,10 @@ const ExportExcelModal = ({ isOpen, onClose }) => {
               </label>
             </div>
 
-            {/* Data Type Checkboxes */}
+            {/* Document Type Checkboxes */}
             <div className='space-y-2'>
               <label className='block text-sm font-bold text-gray-700 mb-3'>
-                Select Data Types to Export:
+                Select Document Types to Export:
               </label>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
                 {dataTypes.map((type) => (
@@ -214,10 +214,10 @@ const ExportExcelModal = ({ isOpen, onClose }) => {
                 Export Information
               </h3>
               <ul className='text-xs text-blue-700 space-y-1 list-disc list-inside'>
-                <li>Select the data types you want to export</li>
-                <li>Each data type will be downloaded as a separate Excel file</li>
+                <li>Select the document types you want to export</li>
+                <li>Each document type will be downloaded as a separate Excel file</li>
                 <li>Files will include the date in the filename</li>
-                <li>Use "Select All" to export all data types at once</li>
+                <li>Use "Select All" to export all document types at once</li>
               </ul>
             </div>
           </div>

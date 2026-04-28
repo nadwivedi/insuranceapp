@@ -19,6 +19,7 @@ const ImportModal = ({ isOpen, onClose }) => {
   const [jsonFile, setJsonFile] = useState(null)
   const [jsonData, setJsonData] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [showInstructions, setShowInstructions] = useState(false)
 
   // Reset form when modal closes
   useEffect(() => {
@@ -26,6 +27,7 @@ const ImportModal = ({ isOpen, onClose }) => {
       setSelectedDataType('')
       setJsonFile(null)
       setJsonData(null)
+      setShowInstructions(false)
     }
   }, [isOpen])
 
@@ -39,12 +41,12 @@ const ImportModal = ({ isOpen, onClose }) => {
         try {
           const json = JSON.parse(e.target.result)
           setJsonData(json)
-          toast.success('JSON file loaded successfully', {
+          toast.success('File loaded successfully', {
             position: 'top-right',
             autoClose: 2000
           })
         } catch (error) {
-          toast.error('Invalid JSON file', {
+          toast.error('Invalid file format', {
             position: 'top-right',
             autoClose: 3000
           })
@@ -58,7 +60,7 @@ const ImportModal = ({ isOpen, onClose }) => {
 
   const handleImport = async () => {
     if (!selectedDataType) {
-      toast.error('Please select a data type', {
+      toast.error('Please select a document type', {
         position: 'top-right',
         autoClose: 3000
       })
@@ -66,7 +68,7 @@ const ImportModal = ({ isOpen, onClose }) => {
     }
 
     if (!jsonData) {
-      toast.error('Please upload a JSON file', {
+      toast.error('Please upload a document', {
         position: 'top-right',
         autoClose: 3000
       })
@@ -181,39 +183,72 @@ const ImportModal = ({ isOpen, onClose }) => {
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div className='px-6 py-5 bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 border-b border-gray-200 flex items-center justify-between'>
+          <div className='px-5 py-3.5 md:px-6 md:py-5 bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 border-b border-gray-200 flex items-center justify-between'>
             <div className='flex items-center gap-3'>
-              <div className='w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center text-white text-xl'>
+              <div className='w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center text-white text-lg md:text-xl'>
                 📥
               </div>
               <div>
-                <h2 className='text-xl font-bold text-gray-800'>Import Data</h2>
-                <p className='text-xs text-gray-500'>Upload JSON file to import</p>
+                <h2 className='text-lg md:text-xl font-bold text-gray-800'>Upload Document</h2>
+                <p className='text-xs text-gray-500'>Upload file to import</p>
               </div>
             </div>
-            <button
-              onClick={onClose}
-              className='text-gray-400 hover:text-gray-600 transition-colors p-1 hover:bg-gray-100 rounded-lg'
-            >
-              <svg className='w-6 h-6' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
-              </svg>
-            </button>
+            <div className='flex items-center gap-2'>
+              <button
+                onClick={() => setShowInstructions(!showInstructions)}
+                className={`p-1.5 rounded-lg transition-all ${
+                  showInstructions 
+                    ? 'bg-indigo-100 text-indigo-600 shadow-inner' 
+                    : 'text-gray-400 hover:text-indigo-500 hover:bg-indigo-50'
+                }`}
+                title="Show Instructions"
+              >
+                <svg className='w-5 h-5 md:w-6 md:h-6' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z' />
+                </svg>
+              </button>
+              <button
+                onClick={onClose}
+                className='text-gray-400 hover:text-gray-600 transition-colors p-1 hover:bg-gray-100 rounded-lg'
+              >
+                <svg className='w-5 h-5 md:w-6 md:h-6' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
+                </svg>
+              </button>
+            </div>
           </div>
+
+          {/* Collapsible Instructions */}
+          {showInstructions && (
+            <div className='px-6 py-4 bg-indigo-50/50 border-b border-indigo-100 animate-in slide-in-from-top duration-300'>
+              <h3 className='text-sm font-bold text-indigo-800 mb-2 flex items-center gap-2'>
+                <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z' />
+                </svg>
+                Instructions
+              </h3>
+              <ul className='text-xs text-indigo-700 space-y-1 list-disc list-inside'>
+                <li>Select the type of document you want to import</li>
+                <li>Upload a valid file with an array of records</li>
+                <li>Duplicate records will be automatically skipped</li>
+                <li>Click Upload to add records to the database</li>
+              </ul>
+            </div>
+          )}
 
           {/* Body */}
           <div className='p-6 space-y-5'>
-            {/* Data Type Selection */}
+            {/* Document Type Selection */}
             <div>
               <label className='block text-sm font-bold text-gray-700 mb-2'>
-                Select Data Type *
+                Select Document Type *
               </label>
               <select
                 value={selectedDataType}
                 onChange={(e) => setSelectedDataType(e.target.value)}
                 className='w-full px-4 py-3 border-2 border-indigo-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-400 transition-all bg-white text-sm font-semibold'
               >
-                <option value=''>Choose data type...</option>
+                <option value=''>Choose document type...</option>
                 {dataTypes.map((type) => (
                   <option key={type.value} value={type.value}>
                     {type.label}
@@ -225,7 +260,7 @@ const ImportModal = ({ isOpen, onClose }) => {
             {/* File Upload */}
             <div>
               <label className='block text-sm font-bold text-gray-700 mb-2'>
-                Upload JSON File *
+                Upload Document *
               </label>
               <input
                 type='file'
@@ -243,21 +278,7 @@ const ImportModal = ({ isOpen, onClose }) => {
               )}
             </div>
 
-            {/* Info Box */}
-            <div className='p-4 bg-blue-50 border border-blue-200 rounded-xl'>
-              <h3 className='text-sm font-bold text-blue-800 mb-2 flex items-center gap-2'>
-                <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z' />
-                </svg>
-                Instructions
-              </h3>
-              <ul className='text-xs text-blue-700 space-y-1 list-disc list-inside'>
-                <li>Select the type of data you want to import</li>
-                <li>Upload a valid JSON file with an array of records</li>
-                <li>Duplicate records will be automatically skipped</li>
-                <li>Click Import to add records to the database</li>
-              </ul>
-            </div>
+
           </div>
 
           {/* Footer */}
@@ -283,7 +304,7 @@ const ImportModal = ({ isOpen, onClose }) => {
                   <svg className='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                     <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12' />
                   </svg>
-                  Import Data
+                  Upload Document
                 </>
               )}
             </button>
