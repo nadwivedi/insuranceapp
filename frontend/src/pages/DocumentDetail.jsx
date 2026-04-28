@@ -73,7 +73,14 @@ const DocumentDetail = () => {
 
         {/* Document Display Section */}
         <div className='relative mb-8'>
-          <DocumentMockup type={doc.type} vehicleNumber={doc.vehicleNumber} />
+          <DocumentMockup 
+            type={doc.type} 
+            vehicleNumber={doc.vehicleNumber} 
+            chassisNumber={doc.chassisNumber || 'CH-99827364512'}
+            policyNumber={doc.policyNumber}
+            validFrom={doc.validFrom}
+            validTo={doc.validTo}
+          />
           
           {/* Quick Actions Bar - Floating near the document */}
           <div className='absolute -bottom-6 left-1/2 flex -translate-x-1/2 gap-3'>

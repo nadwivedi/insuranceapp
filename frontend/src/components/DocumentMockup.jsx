@@ -1,63 +1,82 @@
-const DocumentMockup = ({ type = 'Insurance', vehicleNumber = 'MH01AB1234', color = 'indigo' }) => {
+const DocumentMockup = ({ 
+  type = 'Insurance', 
+  vehicleNumber = 'MH01AB1234', 
+  chassisNumber = 'CH-99827364512',
+  policyNumber = 'POL-88273645',
+  validFrom = '01-05-2023',
+  validTo = '30-04-2024',
+  color = 'indigo' 
+}) => {
   return (
-    <div className={`relative aspect-[3/4] w-full overflow-hidden rounded-2xl border-4 border-white bg-white shadow-2xl shadow-slate-200`}>
-      {/* Document Header */}
-      <div className={`bg-${color}-600 p-4 text-white`}>
+    <div className='relative aspect-[3/4] w-full overflow-hidden rounded-2xl border-4 border-white bg-white shadow-2xl shadow-slate-200'>
+      {/* Header */}
+      <div className='bg-slate-900 p-5 text-white'>
         <div className='flex items-center justify-between'>
-          <div className='h-8 w-8 rounded-full bg-white/20' />
+          <div className='h-10 w-10 rounded-full border-2 border-white/20 flex items-center justify-center font-black text-xs italic'>IA</div>
           <div className='text-right'>
-            <p className='text-[8px] font-black uppercase tracking-widest opacity-80'>Official Certificate</p>
-            <p className='text-xs font-black uppercase'>{type}</p>
+            <h2 className='text-[10px] font-black uppercase tracking-[0.25em] text-indigo-400'>Official Document</h2>
+            <p className='text-sm font-black uppercase tracking-tight'>{type} Certificate</p>
           </div>
         </div>
       </div>
 
-      {/* Document Body */}
+      {/* Document Content */}
       <div className='p-6'>
-        <div className='mb-6 space-y-2'>
-          <div className='h-1 w-20 rounded-full bg-slate-100' />
-          <div className='h-1 w-32 rounded-full bg-slate-100' />
-        </div>
+        <div className='mb-8 space-y-5'>
+          {/* Main ID Section */}
+          <div className='rounded-2xl border-2 border-slate-100 bg-slate-50/50 p-4'>
+            <p className='mb-1 text-[8px] font-bold uppercase tracking-widest text-slate-400'>Vehicle Registration Number</p>
+            <p className='text-xl font-black tracking-[0.1em] text-slate-900'>{vehicleNumber}</p>
+          </div>
 
-        <div className='mb-8 rounded-xl border-2 border-dashed border-slate-100 p-4 text-center'>
-          <p className='text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400'>Registration Number</p>
-          <p className='text-2xl font-black tracking-widest text-slate-900'>{vehicleNumber}</p>
-        </div>
-
-        <div className='grid grid-cols-2 gap-4'>
-          <div className='space-y-3'>
-            <div>
-              <p className='text-[8px] font-bold uppercase text-slate-400'>Chassis No</p>
-              <div className='h-1 w-full rounded-full bg-slate-100' />
+          {/* Secondary Details Grid */}
+          <div className='grid grid-cols-2 gap-4'>
+            <div className='space-y-1'>
+              <p className='text-[8px] font-bold uppercase tracking-widest text-slate-400'>Chassis Number</p>
+              <p className='text-[11px] font-black text-slate-800'>{chassisNumber}</p>
             </div>
-            <div>
-              <p className='text-[8px] font-bold uppercase text-slate-400'>Engine No</p>
-              <div className='h-1 w-full rounded-full bg-slate-100' />
+            <div className='space-y-1'>
+              <p className='text-[8px] font-bold uppercase tracking-widest text-slate-400'>Policy Number</p>
+              <p className='text-[11px] font-black text-slate-800'>{policyNumber}</p>
             </div>
           </div>
-          <div className='flex items-center justify-center'>
-            <div className='h-16 w-16 rounded-lg border-2 border-slate-100 bg-slate-50 flex items-center justify-center'>
-               <div className='h-10 w-10 opacity-10 bg-slate-900 rounded-sm' />
+
+          <hr className='border-slate-100' />
+
+          {/* Validity Section */}
+          <div className='grid grid-cols-2 gap-4'>
+            <div className='rounded-xl border border-emerald-100 bg-emerald-50/30 p-3'>
+              <p className='text-[8px] font-bold uppercase tracking-widest text-emerald-600 mb-1'>Valid From</p>
+              <p className='text-xs font-black text-emerald-900'>{validFrom}</p>
+            </div>
+            <div className='rounded-xl border border-rose-100 bg-rose-50/30 p-3'>
+              <p className='text-[8px] font-bold uppercase tracking-widest text-rose-600 mb-1'>Valid To</p>
+              <p className='text-xs font-black text-rose-900'>{validTo}</p>
             </div>
           </div>
         </div>
 
-        <div className='mt-8 flex justify-between items-end'>
-          <div className='space-y-1'>
-            <div className='h-1 w-12 bg-slate-100 rounded-full' />
-            <div className='h-1 w-16 bg-slate-100 rounded-full' />
+        {/* Footer Design */}
+        <div className='mt-12 flex items-center justify-between border-t border-slate-50 pt-6'>
+          <div className='h-16 w-16 rounded-lg bg-slate-50 border-2 border-slate-100 flex items-center justify-center'>
+            {/* Fake QR/Barcode element */}
+            <div className='grid grid-cols-3 gap-1 opacity-20'>
+              {Array.from({ length: 9 }).map((_, i) => (
+                <div key={i} className={`h-2 w-2 rounded-sm ${i % 2 === 0 ? 'bg-slate-900' : 'bg-transparent'}`} />
+              ))}
+            </div>
           </div>
           <div className='text-center'>
-            <div className='mb-1 h-6 w-16 bg-slate-50 border border-slate-100 rounded rotate-[-12deg] flex items-center justify-center'>
-               <p className='text-[6px] font-bold text-slate-300'>APPROVED</p>
+            <div className='mb-1 h-8 w-24 bg-indigo-50/50 border border-indigo-100 rounded flex items-center justify-center rotate-[-5deg]'>
+              <p className='text-[8px] font-black text-indigo-400 tracking-widest uppercase'>Verified</p>
             </div>
-            <p className='text-[6px] font-bold uppercase text-slate-400'>Auth. Signatory</p>
+            <p className='text-[7px] font-bold uppercase text-slate-400'>Digitally Signed</p>
           </div>
         </div>
       </div>
 
       {/* Security Hologram */}
-      <div className='absolute bottom-4 right-4 h-6 w-6 rounded-full bg-gradient-to-tr from-yellow-400 via-amber-200 to-yellow-500 opacity-30 shadow-inner' />
+      <div className='absolute -right-4 top-1/2 h-16 w-16 -translate-y-1/2 rounded-full bg-slate-400/5 blur-xl' />
     </div>
   )
 }
