@@ -106,7 +106,7 @@ const Home = () => {
 
 return (
     <div className='min-h-screen bg-[radial-gradient(circle_at_top,_#eff6ff,_#f8fafc_45%,_#ffffff_100%)]'>
-      <main className='pl-2 pr-4 pt-2 pb-10 lg:pl-3 lg:pr-8 lg:pt-3'>
+      <main className='pl-2 pr-4 pt-2 pb-32 lg:pl-3 lg:pr-8 lg:pt-3'>
         <section className='w-full'>
           <div className='max-w-5xl mx-auto'>
 

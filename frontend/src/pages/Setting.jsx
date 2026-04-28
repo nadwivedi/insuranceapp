@@ -1,30 +1,9 @@
-import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import { getAllThemes, getAllVehicleNumberDesigns } from '../context/ThemeContext'
 
 const Setting = () => {
   const navigate = useNavigate()
-  const { logout } = useAuth()
-  const [currentPassword, setCurrentPassword] = useState('')
-  const [newPassword, setNewPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-
-  const themes = getAllThemes()
-  const currentTheme = localStorage.getItem('theme') || 'theme1'
-
-  const vehicleNumberDesigns = getAllVehicleNumberDesigns()
-  const currentVehicleDesign = localStorage.getItem('vehicleNumberDesign') || 'design1'
-
-  const handleThemeChange = (themeName) => {
-    localStorage.setItem('theme', themeName)
-    window.location.reload()
-  }
-
-  const handleVehicleDesignChange = (designName) => {
-    localStorage.setItem('vehicleNumberDesign', designName)
-    window.location.reload()
-  }
+  const { logout, user } = useAuth()
 
   const handleLogout = async () => {
     await logout()
@@ -32,258 +11,55 @@ const Setting = () => {
   }
 
   return (
-    <div className='p-4 md:p-6 lg:p-8 pt-4 lg:pt-6 max-w-[1400px] mx-auto'>
-      {/* Header */}
-      <div className='mb-6'>
-        <h1 className='text-2xl font-black text-gray-800 mb-1'>Settings</h1>
-        <p className='text-sm text-gray-600'>Manage your application preferences and configuration</p>
-      </div>
-
-      {/* Settings Cards */}
-      <div className='space-y-4'>
-        {/* Theme Settings */}
-        <div className='bg-white rounded-xl p-6 shadow-lg border border-gray-200'>
-          <div className='flex items-center gap-3 mb-4'>
-            <div className='w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center text-white text-xl'>
-              🎨
-            </div>
-            <div>
-              <h2 className='text-lg font-bold text-gray-800'>Theme Settings</h2>
-              <p className='text-xs text-gray-500'>Customize the appearance of your application</p>
-            </div>
-          </div>
-
-          <div className='space-y-3'>
-            <label className='text-sm font-semibold text-gray-700'>Select Theme</label>
-            <div className='flex flex-wrap gap-3'>
-              {Object.keys(themes).map((themeName) => {
-                const themeData = themes[themeName]
-                const isSelected = currentTheme === themeName
-                return (
-                  <button
-                    key={themeName}
-                    onClick={() => handleThemeChange(themeName)}
-                    className={`px-3 py-2 rounded-lg border-2 transition-all flex items-center gap-2 ${
-                      isSelected
-                        ? 'border-indigo-600 bg-indigo-50 shadow-md'
-                        : 'border-gray-200 bg-white hover:border-indigo-300 hover:shadow-sm'
-                    }`}
-                  >
-                    <span className='font-semibold text-gray-800 text-xs capitalize'>
-                      {themeName.replace('theme', 'Theme ')}
-                    </span>
-                    <div className={`w-16 h-5 rounded ${themeData.navbar}`}></div>
-                    {isSelected && (
-                      <div className='w-4 h-4 bg-indigo-600 rounded-full flex items-center justify-center text-white text-[10px]'>
-                        ✓
-                      </div>
-                    )}
-                  </button>
-                )
-              })}
-            </div>
-          </div>
+    <div className='min-h-screen bg-slate-100 px-4 pb-32 pt-4 md:px-6 lg:px-8'>
+      <div className='mx-auto max-w-xl'>
+        <div className='mb-6'>
+          <h1 className='text-2xl font-black text-slate-900'>Settings</h1>
+          <p className='text-xs font-bold uppercase tracking-widest text-slate-500'>Account Preferences</p>
         </div>
 
-        {/* Vehicle Number Design Settings */}
-        <div className='bg-white rounded-xl p-6 shadow-lg border border-gray-200'>
-          <div className='flex items-center gap-3 mb-4'>
-            <div className='w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center text-white text-xl'>
-              🚗
-            </div>
-            <div>
-              <h2 className='text-lg font-bold text-gray-800'>Vehicle Number Design</h2>
-              <p className='text-xs text-gray-500'>Customize how vehicle numbers are displayed</p>
-            </div>
-          </div>
-
-          <div className='space-y-3'>
-            <label className='text-sm font-semibold text-gray-700'>Select Design</label>
-            <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3'>
-              {Object.keys(vehicleNumberDesigns).map((designName) => {
-                const design = vehicleNumberDesigns[designName]
-                const isSelected = currentVehicleDesign === designName
-                return (
-                  <button
-                    key={designName}
-                    onClick={() => handleVehicleDesignChange(designName)}
-                    className={`p-3 rounded-lg border-2 transition-all ${
-                      isSelected
-                        ? 'border-indigo-600 bg-indigo-50 shadow-md'
-                        : 'border-gray-200 bg-white hover:border-indigo-300 hover:shadow-sm'
-                    }`}
-                  >
-                    <div className='flex flex-col items-center mb-2'>
-                      <div className='text-center mb-1.5'>
-                        <div className='font-semibold text-gray-800 text-xs leading-tight'>{design.name}</div>
-                      </div>
-                      {isSelected && (
-                        <div className='w-4 h-4 bg-indigo-600 rounded-full flex items-center justify-center text-white text-[10px]'>
-                          ✓
-                        </div>
-                      )}
-                    </div>
-                    {/* Preview with larger text */}
-                    <div className='mt-2 p-2 bg-gray-50 rounded flex justify-center items-center min-h-[55px]'>
-                      <div className={design.container}>
-                        <span className={design.stateCode.replace('text-sm', 'text-xs')}>CG</span>
-                        <span className={design.districtCode.replace('text-sm', 'text-xs')}>04</span>
-                        <span className={design.series.replace('text-sm', 'text-xs')}>AA</span>
-                        <span className={design.last4Digits.replace('text-sm', 'text-xs')}>4793</span>
-                      </div>
-                    </div>
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-        </div>
-
-{/* Change Password */}
-        <div className='bg-white rounded-xl p-6 shadow-lg border border-gray-200'>
-          <div className='flex items-center gap-3 mb-4'>
-            <div className='w-10 h-10 bg-gradient-to-br from-red-500 to-pink-600 rounded-lg flex items-center justify-center text-white text-xl'>
-              🔒
-            </div>
-            <div>
-              <h2 className='text-lg font-bold text-gray-800'>Change Password</h2>
-              <p className='text-xs text-gray-500'>Update your account password</p>
-            </div>
-          </div>
-
-          <div className='space-y-4'>
-            <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
-              <div>
-                <label className='text-sm font-semibold text-gray-700 block mb-2'>
-                  Current Password
-                </label>
-                <input
-                  type='password'
-                  value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                  placeholder='Enter current password'
-                  className='w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm'
-                />
+        <div className='space-y-6'>
+          {/* Profile Card */}
+          <div className='rounded-[32px] border border-slate-200 bg-slate-50 p-6 shadow-[0_20px_50px_-30px_rgba(15,23,42,0.15)] md:p-8'>
+            <div className='flex flex-col items-center gap-3 mb-8 text-center'>
+              <div className='h-14 w-14 rounded-full bg-indigo-600 flex items-center justify-center text-xl text-white font-black shadow-lg shadow-indigo-100'>
+                J
               </div>
-
               <div>
-                <label className='text-sm font-semibold text-gray-700 block mb-2'>
-                  New Password
-                </label>
-                <input
-                  type='password'
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  placeholder='Enter new password'
-                  className='w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm'
-                />
-              </div>
-
-              <div>
-                <label className='text-sm font-semibold text-gray-700 block mb-2'>
-                  Confirm New Password
-                </label>
-                <input
-                  type='password'
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder='Confirm new password'
-                  className='w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm'
-                />
+                <h2 className='text-lg font-black text-slate-900'>Joe Doe</h2>
+                <p className='text-[10px] font-bold text-indigo-600 uppercase tracking-widest'>Active Member</p>
               </div>
             </div>
 
-            <div className='flex gap-3 pt-2'>
-              <button className='px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg font-semibold hover:from-indigo-700 hover:to-purple-700 transition text-sm'>
-                Update Password
-              </button>
-              <button className='px-6 py-2.5 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition text-sm'>
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Notification Settings */}
-        <div className='bg-white rounded-xl p-6 shadow-lg border border-gray-200'>
-          <div className='flex items-center gap-3 mb-4'>
-            <div className='w-10 h-10 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-lg flex items-center justify-center text-white text-xl'>
-              🔔
-            </div>
-            <div>
-              <h2 className='text-lg font-bold text-gray-800'>Notification Settings</h2>
-              <p className='text-xs text-gray-500'>Manage your notification preferences</p>
-            </div>
-          </div>
-
-          <div className='space-y-3 max-w-2xl'>
-            <div className='flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition'>
-              <div>
-                <div className='font-semibold text-gray-800 text-sm'>Email Notifications</div>
-                <div className='text-xs text-gray-500'>Receive email updates about your account</div>
+            <div className='space-y-4'>
+              <div className='rounded-2xl bg-white p-4 border border-slate-100'>
+                <p className='text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1'>Mobile Number</p>
+                <p className='text-sm font-semibold text-slate-900'>{user?.mobile || '+91 98765 43210'}</p>
               </div>
-              <label className='relative inline-flex items-center cursor-pointer'>
-                <input type='checkbox' className='sr-only peer' defaultChecked />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
-              </label>
-            </div>
-
-            <div className='flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition'>
-              <div>
-                <div className='font-semibold text-gray-800 text-sm'>SMS Notifications</div>
-                <div className='text-xs text-gray-500'>Receive text messages for important updates</div>
+              
+              <div className='rounded-2xl bg-white p-4 border border-slate-100'>
+                <p className='text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1'>Email Address</p>
+                <p className='text-sm font-semibold text-slate-900'>{user?.email || 'demo@example.com'}</p>
               </div>
-              <label className='relative inline-flex items-center cursor-pointer'>
-                <input type='checkbox' className='sr-only peer' />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
-              </label>
-            </div>
-
-            <div className='flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition'>
-              <div>
-                <div className='font-semibold text-gray-800 text-sm'>Push Notifications</div>
-                <div className='text-xs text-gray-500'>Receive push notifications in the browser</div>
-              </div>
-              <label className='relative inline-flex items-center cursor-pointer'>
-                <input type='checkbox' className='sr-only peer' defaultChecked />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        {/* Logout Section */}
-        <div className='bg-white rounded-xl p-6 shadow-lg border border-red-200'>
-          <div className='flex items-center gap-3 mb-4'>
-            <div className='w-10 h-10 bg-gradient-to-br from-red-500 to-red-700 rounded-lg flex items-center justify-center text-white text-xl'>
-              🚪
-            </div>
-            <div>
-              <h2 className='text-lg font-bold text-gray-800'>Logout</h2>
-              <p className='text-xs text-gray-500'>Sign out of your account</p>
             </div>
           </div>
 
-          <div className='space-y-3'>
-            <div className='p-4 bg-red-50 border border-red-200 rounded-lg'>
-              <p className='text-sm text-red-800 mb-4'>
-                You will be signed out of your account and redirected to the login page. Make sure you have saved any unsaved work before logging out.
-              </p>
-              <button
-                onClick={handleLogout}
-                className='w-full flex items-center justify-center gap-3 p-4 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white rounded-lg transition font-semibold text-sm shadow-lg hover:shadow-xl transform hover:scale-105'
-              >
-                <span className='text-xl'>🚪</span>
-                <span>Logout</span>
-              </button>
-            </div>
+          {/* Logout Section */}
+          <div className='rounded-[32px] border border-rose-100 bg-rose-50/50 p-6 shadow-[0_10px_30px_-15px_rgba(225,29,72,0.1)]'>
+            <button
+              onClick={handleLogout}
+              className='flex w-full items-center justify-center gap-3 rounded-2xl bg-rose-600 py-4 text-sm font-black uppercase tracking-widest text-white shadow-lg shadow-rose-200 transition-all hover:bg-rose-700 active:scale-[0.98]'
+            >
+              <svg className='h-5 w-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={3} d='M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1' />
+              </svg>
+              Logout Account
+            </button>
           </div>
         </div>
       </div>
-
-</div>
+    </div>
   )
 }
 
 export default Setting
-

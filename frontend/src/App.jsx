@@ -18,10 +18,11 @@ import Puc from './pages/Puc/Puc'
 import Gps from './pages/Gps/Gps'
 import RTODocuments from './pages/RTODocuments'
 import BottomNavigation from './components/BottomNavigation'
+import PremiumCalculator from './pages/PremiumCalculator'
 
 function AppContent() {
   const location = useLocation()
-  const showNavbar = location.pathname !== '/login' && location.pathname !== '/'
+  const showNavbar = location.pathname !== '/login' && location.pathname !== '/' && location.pathname !== '/premium-calculator' && location.pathname !== '/setting'
   const showBottomNav = location.pathname !== '/login'
 
   return (
@@ -42,6 +43,7 @@ function AppContent() {
           <Route path='/puc' element={<ProtectedRoute><Puc /></ProtectedRoute>} />
           <Route path='/gps' element={<ProtectedRoute><Gps /></ProtectedRoute>} />
           <Route path='/rto-documents' element={<ProtectedRoute><RTODocuments /></ProtectedRoute>} />
+          <Route path='/premium-calculator' element={<ProtectedRoute><PremiumCalculator /></ProtectedRoute>} />
         </Routes>
       </div>
       {showBottomNav && <BottomNavigation />}
