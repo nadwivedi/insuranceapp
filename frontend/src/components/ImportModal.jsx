@@ -246,7 +246,7 @@ const ImportModal = ({ isOpen, onClose }) => {
               <select
                 value={selectedDataType}
                 onChange={(e) => setSelectedDataType(e.target.value)}
-                className='w-full px-4 py-3 border-2 border-indigo-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-400 transition-all bg-white text-sm font-semibold'
+                className='w-full px-4 py-2.5 border-2 border-indigo-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-400 transition-all bg-white text-sm font-semibold'
               >
                 <option value=''>Choose document type...</option>
                 {dataTypes.map((type) => (
@@ -266,7 +266,7 @@ const ImportModal = ({ isOpen, onClose }) => {
                 type='file'
                 accept='.json'
                 onChange={handleFileChange}
-                className='w-full px-4 py-3 border-2 border-indigo-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-400 transition-all bg-white text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100'
+                className='w-full px-4 py-2.5 border-2 border-indigo-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-400 transition-all bg-white text-sm file:mr-4 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100'
               />
               {jsonFile && (
                 <p className='mt-2 text-sm text-green-600 font-semibold flex items-center gap-2'>
@@ -285,14 +285,14 @@ const ImportModal = ({ isOpen, onClose }) => {
           <div className='px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-3 rounded-b-2xl'>
             <button
               onClick={onClose}
-              className='px-5 py-2.5 text-sm font-semibold text-gray-700 bg-white border-2 border-gray-300 rounded-xl hover:bg-gray-50 transition-all'
+              className='px-5 py-2 text-sm font-semibold text-gray-700 bg-white border-2 border-gray-300 rounded-xl hover:bg-gray-50 transition-all'
             >
               Cancel
             </button>
             <button
               onClick={handleImport}
               disabled={!selectedDataType || !jsonData || loading}
-              className='px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl hover:shadow-lg font-semibold text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2'
+              className='px-5 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl hover:shadow-lg font-semibold text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2'
             >
               {loading ? (
                 <>
