@@ -105,7 +105,7 @@ const Home = () => {
 
 return (
     <div className='min-h-screen bg-[radial-gradient(circle_at_top,_#eff6ff,_#f8fafc_45%,_#ffffff_100%)]'>
-      <main className='pl-2 pr-4 pt-6 pb-10 lg:pl-3 lg:pr-8 lg:pt-8'>
+      <main className='pl-2 pr-4 pt-2 pb-10 lg:pl-3 lg:pr-8 lg:pt-3'>
         <section className='w-full'>
           <div className='max-w-5xl mx-auto'>
 
@@ -137,15 +137,11 @@ return (
                   <span className='text-sm font-bold text-purple-900'>Upload Documents</span>
                 </button>
               </div>
-              <div className='mb-5 flex items-center justify-between'>
-                <SearchBar
-                  value={searchQuery}
-                  onChange={setSearchQuery}
-                  placeholder='Search expiring documents...'
-                  toUpperCase={true}
-                />
-                <div className='hidden sm:flex items-center gap-2 text-sm text-slate-500'>
-                  <span className='font-bold text-rose-600'>Expiring Soon (15d)</span>
+              <div className='mb-6'>
+                <h2 className='text-lg font-black text-slate-900'>Expiring Soon</h2>
+                <div className='mt-1.5 flex items-center gap-2'>
+                  <span className='flex h-2 w-2 rounded-full bg-rose-500 animate-pulse'></span>
+                  <p className='text-[9px] font-bold uppercase tracking-[0.2em] text-rose-600'>Critical Reminders (15 Days)</p>
                 </div>
               </div>
 
