@@ -118,17 +118,6 @@ const DocumentDetail = () => {
               </div>
            </div>
            
-           <div className='rounded-3xl bg-emerald-50 p-5 border border-emerald-100 flex items-center justify-between'>
-              <div>
-                <p className='text-[10px] font-black uppercase text-emerald-600'>Verification Status</p>
-                <p className='text-xs font-bold text-emerald-800'>Government Verified</p>
-              </div>
-              <div className='h-8 w-8 rounded-full bg-emerald-500 flex items-center justify-center text-white'>
-                <svg className='h-5 w-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={3} d='M5 13l4 4L19 7' />
-                </svg>
-              </div>
-           </div>
         </div>
       </div>
     </div>
