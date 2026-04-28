@@ -68,10 +68,10 @@ const RTODocuments = () => {
         </div>
 
         {/* Search & Filters Bar */}
-        <div className='mb-6 flex flex-col gap-3 md:flex-row md:items-center'>
-          <div className='relative flex-1'>
-            <div className='absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none'>
-              <svg className='w-4 h-4 text-slate-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+        <div className='mb-6 flex items-center gap-1.5'>
+          <div className='relative flex-1 min-w-0'>
+            <div className='absolute inset-y-0 left-0 flex items-center pl-2.5 pointer-events-none'>
+              <svg className='w-3.5 h-3.5 text-slate-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                 <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2.5} d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' />
               </svg>
             </div>
@@ -79,18 +79,18 @@ const RTODocuments = () => {
               type='text'
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder='Search Vehicle or Doc...'
-              className='w-full rounded-2xl border-2 border-slate-200 bg-white py-2.5 pl-10 pr-4 text-xs font-black text-slate-900 placeholder:text-[10px] placeholder:text-slate-400 placeholder:font-semibold focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 transition-all uppercase'
+              placeholder='Search...'
+              className='w-full rounded-xl border-2 border-slate-200 bg-white py-2 pl-8 pr-2 text-[10px] font-black text-slate-900 placeholder:text-[9px] placeholder:text-slate-400 placeholder:font-semibold focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 transition-all uppercase'
             />
           </div>
 
-          <div className='flex gap-2 shrink-0'>
+          <div className='flex gap-1 shrink-0'>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className='rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-[10px] font-black text-slate-700 focus:border-indigo-500 focus:outline-none'
+              className='rounded-xl border-2 border-slate-200 bg-white px-1.5 py-2 text-[9px] font-black text-slate-700 focus:border-indigo-500 focus:outline-none'
             >
-              <option value='All'>All Status</option>
+              <option value='All'>Status</option>
               <option value='Active'>Active</option>
               <option value='Expiring Soon'>Expiring</option>
               <option value='Expired'>Expired</option>
@@ -99,9 +99,9 @@ const RTODocuments = () => {
             <select
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value)}
-              className='rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-[10px] font-black text-slate-700 focus:border-indigo-500 focus:outline-none'
+              className='rounded-xl border-2 border-slate-200 bg-white px-1.5 py-2 text-[9px] font-black text-slate-700 focus:border-indigo-500 focus:outline-none'
             >
-              <option value='All'>All Types</option>
+              <option value='All'>Type</option>
               <option value='Tax'>Tax</option>
               <option value='PUC'>PUC</option>
               <option value='GPS'>GPS</option>
